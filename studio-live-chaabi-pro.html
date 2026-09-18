@@ -228,7 +228,7 @@ Le détourage IA va maintenant supprimer ton mur blanc et ne garder que toi sur 
 
     <div class="panel" style="border:1px solid var(--red)"><div class="p-head"><b>🔴 MULTI-DIFFUSION - Configurée</b><span class="badge b-live">RTMP OK</span></div><div class="p-body">
       <input class="input" value="https://www.youtube.com/@algeria-tech-by-basta" readonly style="font-size:11px">
-      <input class="input" id="rtmpRestream" value="rtmp://live.restream.io/live/re_12395877_eventf8bbf6b5a77a4855a3d833bfa5322033" style="border-color:var(--acc);font:700 11px monospace">
+      <input class="input" id="rtmpRestream" placeholder="rtmp://live.restream.io/live/re_XXXXXXXX (colle ta clé Restream ici)" style="border-color:var(--acc);font:700 11px monospace">
       <div class="grid2"><button class="btn" id="btnTest">Tester</button><button class="btn btn-primary" id="btnObs">📋 Copier OBS</button></div>
       <button class="btn btn-live" style="width:100%" id="btnLive2">🔴 LANCER DIRECT MULTI - Détourage pro</button>
     </div></div>
@@ -1227,11 +1227,12 @@ function init(){
       if(c<0){ clearInterval(int); toast('🔴 DIRECT !'); startGenerique('journal'); }
     },1000);
   };
-  document.getElementById('btnTest').onclick=function(){ toast('✅ RTMP OK • @algeria-tech-by-basta connecté • IA active'); };
-  document.getElementById('btnObs').onclick=function(){ var txt='RTMP: rtmp://live.restream.io/live\nClé: re_12395877_eventf8bbf6b5a77a4855a3d833bfa5322033\nYT: @algeria-tech-by-basta\nURL: '+location.href; navigator.clipboard.writeText(txt).then(function(){ toast('Config OBS copiée'); }); };
+  document.getElementById('btnTest').onclick=function(){ var k=document.getElementById('rtmpRestream').value.trim(); toast(k?('✅ RTMP renseigné • @algeria-tech-by-basta • IA active'):'⚠️ Colle ta clé Restream d\'abord'); };
+  document.getElementById('btnObs').onclick=function(){ var k=document.getElementById('rtmpRestream').value.trim(); if(!k){ toast('⚠️ Colle ta clé Restream d\'abord'); return; } var txt='Clé RTMP: '+k+'\nYT: @algeria-tech-by-basta\nURL: '+location.href; navigator.clipboard.writeText(txt).then(function(){ toast('Config OBS copiée'); }); };
   document.getElementById('btnLoop').onclick=function(){ toast('Mode boucle 24/7: Restream Live Loop'); };
   document.getElementById('btnJingle').onclick=function(){ playJingle('concert'); };
-  document.getElementById('btnSave').onclick=function(){ localStorage.setItem('chaabi-studio-pro', JSON.stringify({name:document.getElementById('inName').value, song:document.getElementById('inSong').value, decor:curDecor})); toast('Sauvé 💾'); };
+  document.getElementById('btnSave').onclick=function(){ localStorage.setItem('chaabi-studio-pro', JSON.stringify({name:document.getElementById('inName').value, song:document.getElementById('inSong').value, decor:curDecor, rtmp:document.getElementById('rtmpRestream').value.trim()})); toast('Sauvé 💾'); };
+  (function(){ try{ var s=JSON.parse(localStorage.getItem('chaabi-studio-pro')||'null'); if(s&&s.rtmp) document.getElementById('rtmpRestream').value=s.rtmp; if(s&&s.name) document.getElementById('inName').value=s.name; if(s&&s.song) document.getElementById('inSong').value=s.song; }catch(e){} })();
   document.getElementById('btnRec').onclick=toggleRec;
   document.getElementById('btnDownload').onclick=downloadRec;
   document.getElementById('btnLive').onclick=toggleLive;

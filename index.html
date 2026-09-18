@@ -4,44 +4,82 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dar El Chaabi TV - @algeria-tech-by-basta</title>
+<script>try{var t=localStorage.getItem('chaabi-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <style>
-:root{--bg:#fdfaf3;--bg2:#f5f1e8;--paper:#fff;--ink:#1e232e;--mut:#6b7688;--line:#e8e0d0;--acc:#b8942f;--acc2:#8a6d2e;--acc-soft:#fff3d0;--radius:16px;--radius-lg:24px;--shadow:0 8px 32px rgba(30,35,46,.08)}
-html[data-theme="dark"]{--bg:#0c111a;--bg2:#121a28;--paper:#182233;--ink:#e8eef8;--mut:#8ea0b8;--line:#24314a;--acc:#e0c06a;--acc2:#c9a84d;--acc-soft:#2a2312}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+:root{--bg:#fdfaf3;--bg2:#f5f1e8;--paper:#fff;--ink:#1e232e;--mut:#6b7688;--line:#e8e0d0;--acc:#b8942f;--acc2:#8a6d2e;--acc-soft:#fff3d0;--gold:linear-gradient(100deg,#f3d78a 0%,#c9a24a 50%,#8a6d2e 100%);--radius:16px;--shadow:0 8px 32px rgba(30,35,46,.08)}
+html[data-theme="dark"]{--bg:#0a0e16;--bg2:#101724;--paper:#151e2e;--ink:#eef2f9;--mut:#93a3bb;--line:#2a3550;--acc:#e0c06a;--acc2:#c9a84d;--acc-soft:#2a2312;--shadow:0 8px 32px rgba(0,0,0,.45)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif;transition:background .25s,color .25s}
+a{color:inherit;text-decoration:none}
 .shell{width:min(1280px,92vw);margin:auto}
-header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 85%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(16px)}
+header::after{content:"";display:block;height:2px;background:var(--gold)}
 .h-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;flex-wrap:wrap}
-.brand{display:flex;gap:12px;align-items:center}.logo{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#f3d78a,#8a6d2e);color:#111;font:900 16px system-ui}
+.brand{display:flex;gap:12px;align-items:center}.logo{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--gold);color:#111;font:900 18px system-ui;box-shadow:0 4px 14px rgba(184,148,47,.35)}
 .brand b{font:800 18px/1.1 Georgia,serif}.brand small{display:block;font:600 10px system-ui;color:var(--mut);letter-spacing:.1em;text-transform:uppercase}
 .nav{display:flex;gap:6px;flex-wrap:wrap}.nav a{padding:8px 12px;border-radius:999px;font:600 13px system-ui}.nav a:hover{background:var(--bg2)}.nav a.active{background:var(--ink);color:var(--paper)}
-.btn{padding:10px 18px;border-radius:999px;border:1px solid transparent;font:700 13px system-ui;display:inline-flex;gap:6px;align-items:center;cursor:pointer}
-.btn-primary{background:linear-gradient(100deg,var(--acc),var(--acc2));color:#111}.btn-ghost{background:var(--paper);border:1px solid var(--line)}
+.btn{padding:10px 18px;border-radius:999px;border:1px solid transparent;font:700 13px system-ui;display:inline-flex;gap:6px;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);transition:transform .12s,box-shadow .12s,filter .12s}
+.btn:hover{transform:translateY(-1px)}.btn:disabled{opacity:.55;cursor:default;transform:none}
+.btn-primary{background:var(--gold);color:#1a1300;box-shadow:0 4px 14px rgba(184,148,47,.3)}.btn-primary:hover{filter:brightness(1.06)}
+.btn-ghost{background:var(--paper);border:1px solid var(--line)}.btn-ghost:hover{border-color:var(--acc)}
 .btn-sm{padding:7px 14px;font-size:12.5px}
-.social-bar{display:flex;gap:8px}.social-bar a{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--paper);border:1px solid var(--line)}
 .hero{padding:42px 0 28px;display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
 @media(max-width:900px){.hero{grid-template-columns:1fr}}
-.kicker{display:inline-flex;padding:6px 12px;border-radius:999px;background:var(--acc-soft);border:1px solid color-mix(in srgb,var(--acc) 25%,transparent);font:700 11px system-ui;text-transform:uppercase;color:var(--acc2)}
-.hero h1{font:800 clamp(28px,4.5vw,48px)/.95 Georgia,serif;margin:16px 0 12px}.hero h1 em{background:linear-gradient(100deg,var(--acc),#d4a43a);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kicker{display:inline-flex;padding:6px 12px;border-radius:999px;background:var(--acc-soft);border:1px solid color-mix(in srgb,var(--acc) 30%,transparent);font:700 11px system-ui;text-transform:uppercase;color:var(--acc2)}
+.hero h1{font:800 clamp(28px,4.5vw,48px)/.95 Georgia,serif;margin:16px 0 12px}.hero h1 em{background:var(--gold);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:italic}
 .lead{font:18px/1.5 Georgia,serif;color:var(--mut);max-width:52ch}
-.section{padding:48px 0;border-top:1px solid var(--line)}.section.alt{background:var(--bg2)}
-.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
-.sec-head h2{font:800 28px/1.1 Georgia,serif;margin:0}
-.player-layout{display:grid;grid-template-columns:1.6fr .9fr;gap:18px}
+.hero-card{position:relative;display:block;aspect-ratio:4/3;border-radius:24px;overflow:hidden;border:2px solid var(--acc);box-shadow:var(--shadow)}
+.hero-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}.hero-card:hover img{transform:scale(1.04)}
+.hero-card span{position:absolute;left:0;right:0;bottom:0;padding:26px 16px 14px;color:#fff;font:700 14px system-ui;background:linear-gradient(0deg,rgba(0,0,0,.75),transparent)}
+.section{padding:44px 0;border-top:1px solid var(--line)}.section.alt{background:var(--bg2)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.sec-head h2{font:800 28px/1.1 Georgia,serif;margin:0}.sec-head h2::after{content:"";display:block;width:56px;height:3px;border-radius:3px;background:var(--gold);margin-top:8px}
+.sec-head p{margin:8px 0 0;color:var(--mut);font:14px system-ui}
+.input{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:13.5px system-ui;width:100%;min-width:0}
+.input:focus{outline:2px solid color-mix(in srgb,var(--acc) 55%,transparent);border-color:var(--acc)}
+/* barres au-dessus du lecteur */
+.cmdbar{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;padding:14px;background:var(--paper);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+@media(max-width:900px){.cmdbar{grid-template-columns:1fr}}
+.cmd{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:6px 8px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+.cmd:focus-within{border-color:var(--acc)}
+.cmd .ico{font-size:16px}
+.cmd .input{flex:1;border:0;background:transparent;padding:8px 4px;min-width:140px}.cmd .input:focus{outline:0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--paper)}
+.seg button{border:0;background:transparent;padding:6px 11px;font:700 12px system-ui;color:var(--mut);cursor:pointer}
+.seg button.on{background:var(--acc-soft);color:var(--acc2)}
+.player-layout{display:grid;grid-template-columns:1.6fr .9fr;gap:18px;align-items:start}
 @media(max-width:980px){.player-layout{grid-template-columns:1fr}}
 .player-wrap{background:var(--paper);border-radius:24px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
 .player-frame{aspect-ratio:16/9;background:#000;position:relative}
-.player-info{padding:16px 18px}.chip{display:inline-flex;padding:4px 10px;border-radius:999px;background:var(--bg2);border:1px solid var(--line);font:600 11px system-ui}
-.playlist{background:var(--paper);border:1px solid var(--line);border-radius:24px;overflow:hidden;max-height:720px;display:flex;flex-direction:column}
-.playlist-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
-.playlist-list{overflow:auto;padding:8px;display:grid;gap:8px}
-.v-item{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:8px;border-radius:12px;border:1px solid transparent;text-align:left;background:transparent;width:100%;cursor:pointer}
-.v-item:hover{background:var(--bg2)}.v-item.on{background:var(--acc-soft);border-color:color-mix(in srgb,var(--acc) 30%,transparent)}
-.v-thumb{aspect-ratio:16/9;border-radius:8px;background:#111;overflow:hidden;position:relative}.v-thumb img{width:100%;height:100%;object-fit:cover}
-.grid{display:grid;gap:14px}.grid-3{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(4,1fr)}
-@media(max-width:900px){.grid-3,.grid-4{grid-template-columns:1fr 1fr}}@media(max-width:560px){.grid-3,.grid-4{grid-template-columns:1fr}}
+.player-info{padding:16px 18px}.player-info h3{margin:0 0 8px;font:700 18px/1.3 Georgia,serif}
+.meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{display:inline-flex;padding:4px 10px;border-radius:999px;background:var(--bg2);border:1px solid var(--line);font:600 11px system-ui}
+.badge{display:inline-flex;padding:2px 8px;border-radius:999px;background:var(--acc-soft);color:var(--acc2);font:700 10.5px system-ui;text-transform:uppercase;letter-spacing:.04em}
+/* colonne droite à onglets */
+.side{background:var(--paper);border:1px solid var(--line);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;height:640px;box-shadow:var(--shadow)}
+@media(max-width:980px){.side{height:520px}}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--bg2);border-bottom:1px solid var(--line)}
+.tab{padding:13px 8px;background:transparent;border:0;border-bottom:3px solid transparent;font:700 13px system-ui;color:var(--mut);cursor:pointer;display:flex;gap:7px;align-items:center;justify-content:center}
+.tab:hover{color:var(--ink)}.tab.on{color:var(--ink);background:var(--paper);border-bottom-color:var(--acc)}
+.tab .count{background:var(--acc-soft);color:var(--acc2);border-radius:999px;padding:1px 8px;font-size:11px}
+.tabpane{display:none;flex-direction:column;min-height:0;flex:1}.tabpane.on{display:flex}
+.pane-head{padding:10px 12px;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.pane-body{overflow:auto;padding:8px;display:grid;gap:6px;align-content:start;flex:1}
+.row{display:grid;grid-template-columns:112px 1fr auto;gap:10px;padding:7px;border-radius:12px;border:1px solid transparent;align-items:center;cursor:pointer}
+.row:hover{background:var(--bg2)}.row.on{background:var(--acc-soft);border-color:color-mix(in srgb,var(--acc) 40%,transparent)}
+.row-t b{display:block;font:600 13px/1.3 system-ui;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.row-t small{display:block;margin-top:3px;color:var(--mut);font:11.5px system-ui}
+.row-act{display:grid;gap:5px}
+.v-thumb{aspect-ratio:16/9;border-radius:8px;background:#111;overflow:hidden;position:relative}.v-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.icon-btn{border:0;background:transparent;color:var(--mut);cursor:pointer;font-size:14px;padding:6px;border-radius:8px}.icon-btn:hover{background:var(--bg2);color:var(--ink)}
+.empty{padding:22px 14px;text-align:center;color:var(--mut);font:13px/1.5 system-ui}
+.notice{margin:8px;padding:12px 14px;border-radius:14px;background:var(--acc-soft);border:1px solid color-mix(in srgb,var(--acc) 35%,transparent);font:12.5px/1.5 system-ui;color:var(--ink)}
+.notice .btn{margin-top:8px}
+.grid{display:grid;gap:14px}.grid-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1000px){.grid-4{grid-template-columns:repeat(3,1fr)}}@media(max-width:760px){.grid-4{grid-template-columns:1fr 1fr}}@media(max-width:480px){.grid-4{grid-template-columns:1fr}}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.dz-over{outline:3px dashed var(--acc);outline-offset:4px}
 #toast{position:fixed;right:16px;bottom:16px;z-index:99;display:grid;gap:8px}
-.toast{background:var(--ink);color:var(--paper);padding:12px 14px;border-radius:12px;font:600 13px system-ui;max-width:360px}
+.toast{background:var(--ink);color:var(--paper);padding:12px 14px;border-radius:12px;font:600 13px system-ui;max-width:360px;transition:opacity .3s}
 </style>
 </head>
 <body>
@@ -52,11 +90,12 @@ header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper
     <nav class="nav">
       <a href="#player" class="active">Lecteur</a>
       <a href="#videos">Vidéos</a>
-      <a href="studio-live-chaabi.html" style="background:linear-gradient(100deg,#ff2a2a,#c43a2a);color:white">🔴 STUDIO LIVE</a>
+      <a href="studio-live-chaabi-pro.html" style="background:linear-gradient(100deg,#ff2a2a,#c43a2a);color:white">🔴 STUDIO LIVE</a>
       <a href="#ecosysteme">Écosystème</a>
     </nav>
     <div style="display:flex;gap:8px;align-items:center">
-      <a class="btn btn-ghost btn-sm" href="https://www.youtube.com/@algeria-tech-by-basta" target="_blank">▶ YouTube</a>
+      <button class="btn btn-ghost btn-sm" id="btnTheme" title="Mode jour / nuit" aria-label="Changer entre mode jour et mode nuit">🌙</button>
+      <a class="btn btn-ghost btn-sm" href="https://www.youtube.com/@algeria-tech-by-basta" target="_blank" rel="noopener">▶ YouTube</a>
       <button class="btn btn-primary btn-sm" id="btnGoStudio">🔴 Studio PRO</button>
     </div>
   </div>
@@ -67,63 +106,95 @@ header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper
   <div>
     <div class="kicker">● Chaîne télé Chaabi depuis ton site • @algeria-tech-by-basta</div>
     <h1>Faire vivre le <em>Chaabi Algérien</em> depuis ton site</h1>
-    <p class="lead">Lecteur direct 100% intégré : les vidéos restent sur ton site, pas de renvoi YouTube. Playlist restaurée. Erreur 153 éradiquée.</p>
+    <p class="lead">Regarde, cherche et ajoute tes vidéos et playlists YouTube directement ici, sans quitter le site.</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-primary" id="ctaLive">▶ Voir le live</button>
-      <a class="btn" href="studio-live-chaabi.html" style="background:#ff2a2a;color:white">🔴 Studio Live PRO</a>
+      <button class="btn btn-primary" id="ctaLive">▶ Voir le lecteur</button>
+      <a class="btn" href="studio-live-chaabi-pro.html" style="background:#ff2a2a;color:white">🔴 Studio Live PRO</a>
     </div>
   </div>
-  <div style="background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:12px;aspect-ratio:4/3;display:grid;place-items:center">Aperçu Studio Live • Décors virtuels • IA détourage</div>
+  <a class="hero-card" href="studio-live-chaabi-pro.html" aria-label="Ouvrir le Studio Live">
+    <img src="assets/decors/casbah-chaabi.jpg" alt="Décor virtuel Casbah Chaabi">
+    <span>🔴 Studio Live • Décors virtuels • IA détourage</span>
+  </a>
 </section>
 
-<!-- PLAYER - VERSION SIMPLIFIÉE SELON TES INSTRUCTIONS -->
 <section class="section alt" id="player">
   <div class="shell">
     <div class="sec-head">
-      <div><h2>📺 Lecteur YouTube intégré</h2><p>Lis toutes les vidéos directement ici, sans quitter le site. Playlist Chaabi test pré-chargée. Clique sur une vidéo à droite ou ci-dessous pour changer.</p></div>
+      <div><h2>📺 Lecteur</h2><p>Cherche une vidéo ou colle un lien juste ici, puis regarde-la à côté. Tout reste sur le site.</p></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn btn-ghost btn-sm" id="btnPrevVideo">← Précédent</button>
         <button class="btn btn-ghost btn-sm" id="btnNextVideo">Suivant →</button>
         <button class="btn btn-primary btn-sm" id="btnTheater">🎬 Mode cinéma</button>
       </div>
     </div>
-    
+
+    <div class="cmdbar" id="cmdbar">
+      <form class="cmd" id="formSearch" autocomplete="off">
+        <span class="ico">🔍</span>
+        <input class="input" id="searchKeyword" placeholder="Chercher sur YouTube : chaabi mariage, mandole solo…" aria-label="Chercher sur YouTube">
+        <div class="seg" id="searchType" role="group" aria-label="Type de recherche"><button type="button" class="on" data-type="playlist">Playlists</button><button type="button" data-type="video">Vidéos</button></div>
+        <button class="btn btn-primary btn-sm" type="submit" id="btnSearch">Chercher</button>
+      </form>
+      <form class="cmd" id="formAdd" autocomplete="off">
+        <span class="ico">🔗</span>
+        <input class="input" id="addLinkInput" placeholder="Coller un lien YouTube (vidéo ou playlist) ou .mp4" aria-label="Coller un lien">
+        <button class="btn btn-primary btn-sm" type="submit" id="btnAddLink">+ Ajouter</button>
+        <button class="btn btn-ghost btn-sm" type="button" id="btnAddLocal" title="Choisir ou glisser une vidéo de ton ordinateur">📂 Vidéo locale</button>
+        <input type="file" id="inputLocalFile" accept="video/*" multiple style="display:none">
+      </form>
+    </div>
+
     <div class="player-layout" id="playerLayout">
       <div class="player-wrap">
-        <div class="player-frame" id="playerFrame">
-          <!-- Le lecteur vidéo s'affichera directement ici -->
-        </div>
+        <div class="player-frame" id="playerFrame"></div>
         <div class="player-info">
           <h3 id="currentTitle">Cheikh El Hadj Mohamed El Anka - Anthologie Chaabi</h3>
           <div class="meta">
-            <span class="chip">🎵 Chaabi Live</span><span class="chip" id="currentViews">▶ 128K vues • Test</span><span class="chip">📅 Ajouté aujourd'hui</span>
-            <span style="margin-left:auto;display:flex;gap:6px">
+            <span class="chip" id="currentViews">▶ Test</span>
+            <span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
               <button class="btn btn-ghost btn-sm" id="btnLike">❤ J'aime</button>
               <button class="btn btn-ghost btn-sm" id="btnShareVideo">↗ Partager</button>
-              <button class="btn btn-ghost btn-sm" id="btnAddQueue">+ File d'attente</button>
             </span>
           </div>
-          <p id="currentDesc" style="margin:12px 0 0;color:var(--mut);font:13.5px/1.6 system-ui">Maître incontesté du Chaabi algérois. Version restaurée pour Dar El Chaabi TV. Lecteur direct 100% intégré - reste sur le site.</p>
+          <p id="currentDesc" style="margin:12px 0 0;color:var(--mut);font:13.5px/1.6 system-ui"></p>
         </div>
       </div>
-      <div class="playlist">
-        <div class="playlist-head"><b style="font:700 13px system-ui">Playlist • Chaabi Tests (12)</b><button class="btn btn-ghost btn-sm" id="btnShuffle">🔀 Aléatoire</button></div>
-        <div class="playlist-list" id="playlistList"></div>
-      </div>
+
+      <aside class="side" id="side">
+        <div class="tabs" role="tablist">
+          <button class="tab on" role="tab" aria-selected="true" data-tab="queue">📺 À suivre <span class="count" id="countQueue">0</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="results">🔍 Résultats</button>
+        </div>
+        <div class="tabpane on" id="pane-queue">
+          <div class="pane-head">
+            <div class="seg" id="queueFilter" role="group" aria-label="Filtrer la liste"><button type="button" class="on" data-f="all">Tout</button><button type="button" data-f="mine">Mes ajouts</button></div>
+            <button class="btn btn-ghost btn-sm" id="btnShuffle">🔀 Aléatoire</button>
+          </div>
+          <div class="pane-body" id="playlistList"></div>
+        </div>
+        <div class="tabpane" id="pane-results">
+          <div class="notice" id="keyNotice" style="display:none">
+            🔑 La recherche a besoin d'une <b>clé YouTube gratuite</b> (à configurer une seule fois). Ajouter par lien et vidéo locale marchent sans clé.
+            <br><button class="btn btn-primary btn-sm" id="btnSetApiKey">Configurer la clé</button>
+          </div>
+          <div class="pane-body" id="searchResults"><div class="empty">Tape un mot-clé dans la barre 🔍 au-dessus du lecteur.<br>Les résultats s'afficheront ici.</div></div>
+        </div>
+      </aside>
     </div>
   </div>
 </section>
 
 <section class="section" id="videos">
   <div class="shell">
-    <div class="sec-head"><div><h2>🎞️ Vidéos tests</h2><p>Clique pour lire directement sur le site - reste sur le site, pas de renvoi YouTube.</p></div></div>
+    <div class="sec-head"><div><h2>🎞️ Toutes les vidéos</h2><p>Clique pour lire directement sur le site.</p></div></div>
     <div class="grid grid-4" id="videoGrid"></div>
   </div>
 </section>
 
 <section class="section alt" id="ecosysteme">
-  <div class="shell"><h2>🔗 Écosystème - Restream configuré</h2><p>RTMP: rtmp://live.restream.io/live • Clé: re_12395877... • YouTube: @algeria-tech-by-basta • Studio PRO avec IA détourage + presets Concert + Journal</p>
-  <div style="display:flex;gap:8px;margin-top:12px"><a class="btn btn-primary" href="studio-live-chaabi.html">🔴 Ouvrir Studio PRO</a><a class="btn btn-ghost" href="https://www.youtube.com/@algeria-tech-by-basta" target="_blank">Ma chaîne YouTube</a></div></div>
+  <div class="shell"><h2 style="font:800 24px Georgia,serif;margin:0 0 6px">🔗 Écosystème</h2><p style="color:var(--mut);margin:0">Diffusion multi-plateformes via Restream • YouTube : @algeria-tech-by-basta • Studio PRO avec IA détourage, presets Concert et Journal.</p>
+  <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><a class="btn btn-primary" href="studio-live-chaabi-pro.html">🔴 Ouvrir Studio PRO</a><a class="btn btn-ghost" href="https://www.youtube.com/@algeria-tech-by-basta" target="_blank" rel="noopener">Ma chaîne YouTube</a></div></div>
 </section>
 </main>
 
@@ -145,53 +216,161 @@ const VIDEOS = [
 ];
 
 let currentIndex = 0;
+let queueFilter = 'all';
+let searchType = 'playlist';
 const currentTitle = document.getElementById('currentTitle');
 const currentDesc = document.getElementById('currentDesc');
 const currentViews = document.getElementById('currentViews');
 
+// ===== Utilitaires =====
+function escapeHtml(str){
+  return String(str==null?'':str).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function decodeEntities(str){
+  return new DOMParser().parseFromString(String(str||''),'text/html').documentElement.textContent;
+}
 function toast(msg){
   var t=document.createElement('div'); t.className='toast'; t.textContent=msg;
   document.getElementById('toast').appendChild(t);
   setTimeout(function(){ t.style.opacity='0'; setTimeout(function(){ t.remove(); },300); },3000);
 }
+function isYt(v){ return !v.type || v.type==='yt'; }
+function typeLabel(v){ return {yt:'Vidéo YouTube',ytplaylist:'Playlist YouTube',direct:'Lien direct',local:'Fichier local'}[v.type||'yt']; }
+function metaLine(v){ return v.custom ? typeLabel(v)+(v.channel?' • '+v.channel:'') : v.dur+' • '+v.views+' vues'; }
+function scrollToPlayer(){ document.getElementById('playerFrame').scrollIntoView({behavior:'smooth',block:'center'}); }
+function getKey(){ try{ return localStorage.getItem('chaabi-yt-api-key')||''; }catch(e){ return ''; } }
+
+// Reconnaît un lien YouTube (vidéo ou playlist), un ID brut, ou une URL vidéo directe
+function parseContentInput(raw){
+  const val = (raw||'').trim();
+  if(!val) return null;
+  try {
+    const u = new URL(/^https?:\/\//i.test(val) ? val : 'https://'+val);
+    const host = u.hostname.replace(/^www\./,'');
+    if(host==='youtu.be'){
+      const id = u.pathname.slice(1).split('/')[0];
+      if(id) return {type:'yt', id};
+    }
+    if(host==='youtube.com'||host==='m.youtube.com'||host==='music.youtube.com'){
+      const list = u.searchParams.get('list');
+      const v = u.searchParams.get('v');
+      if(u.pathname.startsWith('/playlist') && list) return {type:'ytplaylist', playlistId:list};
+      if(v) return list ? {type:'ytplaylist', playlistId:list} : {type:'yt', id:v};
+      if(u.pathname.startsWith('/shorts/')||u.pathname.startsWith('/embed/')||u.pathname.startsWith('/live/')) return {type:'yt', id:u.pathname.split('/')[2]};
+      if(list) return {type:'ytplaylist', playlistId:list};
+      return null;
+    }
+    if(!/\./.test(host)) return null;
+    return {type:'direct', src:u.href};
+  } catch(e){
+    if(/^[a-zA-Z0-9_-]{11}$/.test(val)) return {type:'yt', id:val};
+    return null;
+  }
+}
+
+async function fetchOEmbed(url){
+  try{
+    const r = await fetch('https://www.youtube.com/oembed?format=json&url='+encodeURIComponent(url));
+    return r.ok ? await r.json() : null;
+  }catch(e){ return null; }
+}
+
+function findExisting(p){
+  return VIDEOS.findIndex(v =>
+    p.type==='ytplaylist' ? (v.type==='ytplaylist' && v.playlistId===p.playlistId)
+    : p.type==='direct' ? (v.type==='direct' && v.src===p.src)
+    : (isYt(v) && v.id===p.id));
+}
+
+// ===== Sauvegarde des ajouts =====
+function saveCustomVideos(){
+  const list = VIDEOS.filter(v=>v.custom && v.type!=='local').map(function(v){
+    return {id:v.id||'',title:v.title,channel:v.channel||'',cat:v.cat,views:v.views,dur:v.dur,desc:v.desc,type:v.type,playlistId:v.playlistId||'',src:v.src||'',thumb:v.thumb||'',custom:true};
+  });
+  try{ localStorage.setItem('chaabi-custom-videos', JSON.stringify(list)); }catch(e){}
+}
+function loadCustomVideos(){
+  try{ return JSON.parse(localStorage.getItem('chaabi-custom-videos')||'[]'); }catch(e){ return []; }
+}
+
+function addVideoItem(item, opts){
+  opts = opts || {};
+  VIDEOS.push(item);
+  saveCustomVideos();
+  renderPlaylist();
+  renderVideoGrid();
+  if(!opts.stay) openTab('queue');
+  toast('✅ Ajouté : '+item.title);
+  if(opts.autoplay){ playVideo(VIDEOS.length-1); if(window.innerWidth<980) scrollToPlayer(); }
+}
+
+function removeVideoItem(index){
+  const v = VIDEOS[index];
+  if(v.type==='local' && v.src){ try{ URL.revokeObjectURL(v.src); }catch(e){} }
+  VIDEOS.splice(index,1);
+  if(index<currentIndex) currentIndex--;
+  if(currentIndex>=VIDEOS.length) currentIndex = VIDEOS.length-1;
+  saveCustomVideos();
+  renderPlaylist();
+  renderVideoGrid();
+  toast('🗑 Retiré de la liste');
+}
+
+// ===== Rendu =====
+function thumbCell(v){
+  if(v.type==='local') return '<div class="v-thumb" style="display:grid;place-items:center;background:#222;color:#fff;font-size:22px">📂</div>';
+  if(v.type==='direct') return '<div class="v-thumb" style="display:grid;place-items:center;background:#222;color:#fff;font-size:22px">🔗</div>';
+  if(v.type==='ytplaylist') return v.thumb
+    ? '<div class="v-thumb"><img src="'+escapeHtml(v.thumb)+'" loading="lazy" alt=""></div>'
+    : '<div class="v-thumb" style="display:grid;place-items:center;background:#222;color:#fff;font-size:22px">📃</div>';
+  return '<div class="v-thumb"><img src="https://img.youtube.com/vi/'+encodeURIComponent(v.id)+'/mqdefault.jpg" loading="lazy" alt=""></div>';
+}
 
 function playVideo(index) {
   currentIndex = index;
   const v = VIDEOS[index];
-  
   const playerFrame = document.getElementById('playerFrame');
+  const allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
   if (playerFrame) {
-    // ASTUCE ULTIME : On ajoute &origin=https://darelchaabi.com pour tromper la sécurité de YouTube
-    // et on utilise youtube-nocookie.com pour éviter les blocages de cookies en local
-    const embedUrl = `https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&modestbranding=1&origin=https://darelchaabi.com`;
-    
-    playerFrame.innerHTML = `<iframe src="${embedUrl}" style="width:100%;height:100%;border:0;position:absolute;inset:0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    if (v.type==='local' || v.type==='direct') {
+      playerFrame.innerHTML = '<video controls autoplay style="width:100%;height:100%;position:absolute;inset:0;background:#000"></video>';
+      playerFrame.firstChild.src = v.src;
+    } else if (v.type==='ytplaylist') {
+      const embedUrl = `https://www.youtube-nocookie.com/embed/videoseries?list=${encodeURIComponent(v.playlistId)}&autoplay=1&rel=0&modestbranding=1&origin=https://darelchaabi.com`;
+      playerFrame.innerHTML = `<iframe src="${embedUrl}" style="width:100%;height:100%;border:0;position:absolute;inset:0" allow="${allow}" allowfullscreen></iframe>`;
+    } else {
+      // origin + youtube-nocookie : évite les blocages d'intégration en local
+      const embedUrl = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(v.id)}?autoplay=1&rel=0&modestbranding=1&origin=https://darelchaabi.com`;
+      playerFrame.innerHTML = `<iframe src="${embedUrl}" style="width:100%;height:100%;border:0;position:absolute;inset:0" allow="${allow}" allowfullscreen></iframe>`;
+    }
   }
-  
-  if (currentTitle) currentTitle.textContent = v.title;
-  if (currentDesc) currentDesc.textContent = v.desc + ' • Durée ' + v.dur + ' • Catégorie ' + v.cat;
-  if (currentViews) currentViews.textContent = '▶ ' + v.views + ' vues • ' + v.dur;
-  
-  document.querySelectorAll('.v-item').forEach((el, i) => { 
-    el.classList.toggle('on', i === index); 
-  });
-  
-  toast('▶ Lecture : ' + v.title);
+  currentTitle.textContent = v.title;
+  currentDesc.textContent = v.custom ? (v.type==='direct' ? v.src : (v.channel||typeLabel(v))) : v.desc + ' • Durée ' + v.dur + ' • Catégorie ' + v.cat;
+  currentViews.textContent = v.custom ? typeLabel(v) : '▶ ' + v.views + ' vues • ' + v.dur;
+  document.querySelectorAll('.v-item').forEach(el => el.classList.toggle('on', Number(el.dataset.i)===index));
 }
 
-function renderPlaylist(filter='') {
+function renderPlaylist() {
   const list = document.getElementById('playlistList');
   if(!list) return;
-  const q = filter.toLowerCase();
   list.innerHTML = '';
+  let shown = 0;
   VIDEOS.forEach((v, i) => {
-    if (q && !(v.title.toLowerCase().includes(q) || v.desc.toLowerCase().includes(q) || v.cat.includes(q))) return;
-    const btn = document.createElement('button');
-    btn.className = 'v-item' + (i === currentIndex ? ' on' : '');
-    btn.innerHTML = `<div class="v-thumb"><img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" loading="lazy" alt=""></div><div><b>${v.title}</b><br><small>${v.dur} • ${v.views} • ${v.cat}</small></div>`;
-    btn.onclick = () => playVideo(i);
-    list.appendChild(btn);
+    if (queueFilter==='mine' && !v.custom) return;
+    shown++;
+    const row = document.createElement('div');
+    row.className = 'row v-item' + (i === currentIndex ? ' on' : '');
+    row.dataset.i = i; row.tabIndex = 0; row.setAttribute('role','button');
+    row.innerHTML = `${thumbCell(v)}<div class="row-t"><b>${escapeHtml(v.title)}</b><small>${escapeHtml(metaLine(v))}</small></div>${v.custom?'<button class="icon-btn rm" title="Retirer de la liste" aria-label="Retirer">✕</button>':'<span></span>'}`;
+    row.onclick = () => playVideo(i);
+    row.onkeydown = (e) => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); playVideo(i); } };
+    if(v.custom) row.querySelector('.rm').onclick = (e) => { e.stopPropagation(); removeVideoItem(i); };
+    list.appendChild(row);
   });
+  if(!shown) list.innerHTML = '<div class="empty">Tu n\'as encore rien ajouté.<br>Utilise la barre 🔍 ou 🔗 au-dessus du lecteur.</div>';
+  document.getElementById('countQueue').textContent = VIDEOS.length;
 }
 
 function renderVideoGrid(filter='all', search='') {
@@ -205,38 +384,185 @@ function renderVideoGrid(filter='all', search='') {
     return true;
   }).forEach((v) => {
     const originalIdx = VIDEOS.indexOf(v);
+    const canOpenYt = isYt(v);
+    const thumbHtml = v.type==='local' ? '<div style="width:100%;height:100%;display:grid;place-items:center;background:#222;color:#fff;font-size:34px">📂</div>'
+      : v.type==='direct' ? '<div style="width:100%;height:100%;display:grid;place-items:center;background:#222;color:#fff;font-size:34px">🔗</div>'
+      : v.type==='ytplaylist' ? (v.thumb ? `<img src="${escapeHtml(v.thumb)}" style="width:100%;height:100%;object-fit:cover">` : '<div style="width:100%;height:100%;display:grid;place-items:center;background:#222;color:#fff;font-size:34px">📃</div>')
+      : `<img src="https://img.youtube.com/vi/${encodeURIComponent(v.id)}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover">`;
+    const sub = v.custom ? metaLine(v) : `${v.views} vues • ${v.desc}`;
     const card = document.createElement('div');
     card.className = 'card';
     card.style.padding = '0'; card.style.overflow = 'hidden';
-    card.innerHTML = `<div style="position:relative;aspect-ratio:16/9;background:#000;cursor:pointer" class="thumbClick"><img src="https://img.youtube.com/vi/${v.id}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover"><span style="position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.75);color:white;padding:2px 6px;border-radius:6px;font:700 11px system-ui">${v.dur}</span><span style="position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:26px;background:linear-gradient(0deg,rgba(0,0,0,.4),transparent)">▶</span></div><div style="padding:12px"><span class="badge">${v.cat}</span><b style="display:block;margin:6px 0 4px;font:600 13.5px/1.3 system-ui">${v.title}</b><small style="color:var(--mut);font:12px system-ui">${v.views} vues • ${v.desc}</small><div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-primary btn-sm playBtn" style="flex:1">▶ Lire ici</button><button class="btn btn-ghost btn-sm ytBtn">YouTube ↗</button></div></div>`;
-    
-    // Au clic, lance la vidéo ET remonte vers le lecteur
-    card.querySelector('.thumbClick').onclick = () => { playVideo(originalIdx); document.getElementById('player').scrollIntoView({behavior:'smooth'}); };
-    card.querySelector('.playBtn').onclick = () => { playVideo(originalIdx); document.getElementById('player').scrollIntoView({behavior:'smooth'}); };
-    card.querySelector('.ytBtn').onclick = () => window.open(`https://www.youtube.com/watch?v=${v.id}`, '_blank');
+    card.innerHTML = `<div style="position:relative;aspect-ratio:16/9;background:#000;cursor:pointer" class="thumbClick">${thumbHtml}<span style="position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.75);color:white;padding:2px 6px;border-radius:6px;font:700 11px system-ui">${escapeHtml(v.dur)}</span><span style="position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:26px;background:linear-gradient(0deg,rgba(0,0,0,.4),transparent)">▶</span></div><div style="padding:12px"><span class="badge">${escapeHtml(v.cat)}</span><b style="display:block;margin:6px 0 4px;font:600 13.5px/1.3 system-ui">${escapeHtml(v.title)}</b><small style="color:var(--mut);font:12px system-ui">${escapeHtml(sub)}</small><div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-primary btn-sm playBtn" style="flex:1">▶ Lire ici</button>${canOpenYt?'<button class="btn btn-ghost btn-sm ytBtn">YouTube ↗</button>':''}${v.custom?'<button class="btn btn-ghost btn-sm rmBtn" title="Retirer">🗑</button>':''}</div></div>`;
+    const go = () => { playVideo(originalIdx); document.getElementById('player').scrollIntoView({behavior:'smooth'}); };
+    card.querySelector('.thumbClick').onclick = go;
+    card.querySelector('.playBtn').onclick = go;
+    if(canOpenYt) card.querySelector('.ytBtn').onclick = () => window.open(`https://www.youtube.com/watch?v=${encodeURIComponent(v.id)}`, '_blank', 'noopener');
+    if(v.custom) card.querySelector('.rmBtn').onclick = (e) => { e.stopPropagation(); removeVideoItem(VIDEOS.indexOf(v)); };
     grid.appendChild(card);
   });
 }
 
+function openTab(name){
+  document.querySelectorAll('.tab').forEach(t=>{ const on=t.dataset.tab===name; t.classList.toggle('on',on); t.setAttribute('aria-selected',on); });
+  document.querySelectorAll('.tabpane').forEach(p=>p.classList.toggle('on',p.id==='pane-'+name));
+}
+
+// ===== Ajout par lien / fichier =====
+async function addFromInput(raw){
+  const parsed = parseContentInput(raw);
+  if(!parsed){ toast('⚠️ Lien non reconnu. Colle un lien YouTube ou un lien .mp4'); return false; }
+  const dup = findExisting(parsed);
+  if(dup>=0){ toast('Déjà dans ta liste, je le lance'); openTab('queue'); playVideo(dup); if(window.innerWidth<980) scrollToPlayer(); return true; }
+  let item;
+  if(parsed.type==='yt'){
+    const m = await fetchOEmbed('https://www.youtube.com/watch?v='+parsed.id);
+    item = {id:parsed.id, title:(m&&m.title)||'Vidéo YouTube', channel:(m&&m.author_name)||'', cat:'ajout', views:'-', dur:'-', desc:'', type:'yt', custom:true};
+  } else if(parsed.type==='ytplaylist'){
+    const m = await fetchOEmbed('https://www.youtube.com/playlist?list='+parsed.playlistId);
+    item = {id:'', playlistId:parsed.playlistId, title:(m&&m.title)||'Playlist YouTube', channel:(m&&m.author_name)||'', cat:'ajout', views:'-', dur:'Playlist', desc:'', type:'ytplaylist', thumb:(m&&m.thumbnail_url)||'', custom:true};
+  } else {
+    const name = decodeURIComponent(parsed.src.split('?')[0].split('/').pop()||'') || 'Vidéo (lien direct)';
+    item = {id:'', src:parsed.src, title:name, channel:'', cat:'ajout', views:'-', dur:'-', desc:parsed.src, type:'direct', custom:true};
+  }
+  addVideoItem(item, {autoplay:true});
+  return true;
+}
+
+function handleFiles(files){
+  const vids = Array.from(files||[]).filter(f=>f.type.startsWith('video/'));
+  if(!vids.length){ toast('⚠️ Choisis un fichier vidéo (mp4, webm…)'); return; }
+  vids.forEach((file,k)=>{
+    const url = URL.createObjectURL(file);
+    addVideoItem({id:'', src:url, title:file.name, channel:'', cat:'local', views:'-', dur:'-', desc:'Fichier de ton ordinateur (disponible tant que cet onglet reste ouvert)', type:'local', custom:true}, {autoplay:k===0});
+  });
+}
+
+// ===== Recherche YouTube =====
+function updateKeyNotice(){ document.getElementById('keyNotice').style.display = getKey() ? 'none' : 'block'; }
+function setApiKey(){
+  const k = prompt('Colle ta clé API YouTube Data v3 (elle reste uniquement dans ton navigateur) :', getKey());
+  if(k!==null){ try{ localStorage.setItem('chaabi-yt-api-key', k.trim()); }catch(e){} updateKeyNotice(); toast(k.trim()?'🔑 Clé enregistrée':'Clé retirée'); }
+}
+
+async function doSearch(){
+  const q = document.getElementById('searchKeyword').value.trim();
+  const res = document.getElementById('searchResults');
+  if(!q){ toast('Tape un mot-clé d\'abord'); return; }
+  openTab('results');
+  updateKeyNotice();
+  if(window.innerWidth<980) document.getElementById('side').scrollIntoView({behavior:'smooth',block:'nearest'});
+  const key = getKey();
+  if(!key){ res.innerHTML = '<div class="empty">Configure d\'abord la clé ci-dessus, puis relance la recherche.</div>'; return; }
+  res.innerHTML = '<div class="empty">Recherche en cours…</div>';
+  const isVideo = searchType==='video';
+  try {
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=${searchType}&maxResults=15&q=${encodeURIComponent(q)}${isVideo?'&videoEmbeddable=true':''}&key=${encodeURIComponent(key)}`;
+    const r = await fetch(url);
+    const data = await r.json();
+    if(!r.ok){ res.innerHTML = '<div class="empty">Erreur YouTube : '+escapeHtml(data.error&&data.error.message||r.status)+'</div>'; return; }
+    if(!data.items || !data.items.length){ res.innerHTML = '<div class="empty">Aucun résultat pour « '+escapeHtml(q)+' ».</div>'; return; }
+    res.innerHTML = '';
+    data.items.forEach((it)=>{
+      const title = decodeEntities(it.snippet.title);
+      const channel = decodeEntities(it.snippet.channelTitle);
+      const th = it.snippet.thumbnails && (it.snippet.thumbnails.medium||it.snippet.thumbnails.default);
+      const thumb = th ? th.url : '';
+      const p = isVideo ? {type:'yt', id:it.id.videoId} : {type:'ytplaylist', playlistId:it.id.playlistId};
+      const mk = () => isVideo
+        ? {id:p.id, title, channel, cat:'ajout', views:'-', dur:'-', desc:'', type:'yt', custom:true}
+        : {id:'', playlistId:p.playlistId, title, channel, cat:'ajout', views:'-', dur:'Playlist', desc:'', type:'ytplaylist', thumb, custom:true};
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `<div class="v-thumb">${thumb?`<img src="${escapeHtml(thumb)}" loading="lazy" alt="">`:''}</div><div class="row-t"><b>${escapeHtml(title)}</b><small>${escapeHtml((isVideo?'Vidéo':'Playlist')+' • '+channel)}</small></div><div class="row-act"><button class="btn btn-primary btn-sm bPlay">▶ Lire</button><button class="btn btn-ghost btn-sm bAdd">+ Ajouter</button></div>`;
+      const bAdd = row.querySelector('.bAdd');
+      const markAdded = () => { bAdd.textContent = '✓ Ajouté'; bAdd.disabled = true; };
+      if(findExisting(p)>=0) markAdded();
+      bAdd.onclick = () => { addVideoItem(mk(), {stay:true}); markAdded(); };
+      row.querySelector('.bPlay').onclick = () => {
+        let idx = findExisting(p);
+        if(idx<0){ addVideoItem(mk(), {stay:true}); idx = VIDEOS.length-1; markAdded(); }
+        playVideo(idx);
+        if(window.innerWidth<980) scrollToPlayer();
+      };
+      res.appendChild(row);
+    });
+  } catch(e){
+    res.innerHTML = '<div class="empty">Impossible de joindre YouTube. Vérifie ta connexion.</div>';
+  }
+}
+
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded',()=>{
+  loadCustomVideos().forEach(v=>VIDEOS.push(v));
   renderPlaylist();
   renderVideoGrid();
-  
-  playVideo(0); // <--- LANCE LA 1ERE VIDÉO AU CHARGEMENT
+  updateKeyNotice();
+  playVideo(0);
 
+  // thème jour / nuit
+  const btnTheme = document.getElementById('btnTheme');
+  const syncThemeBtn = () => { btnTheme.textContent = document.documentElement.getAttribute('data-theme')==='dark' ? '☀️' : '🌙'; };
+  syncThemeBtn();
+  btnTheme.onclick = () => {
+    const next = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try{ localStorage.setItem('chaabi-theme', next); }catch(e){}
+    syncThemeBtn();
+  };
+
+  // lecteur
   document.getElementById('btnPrevVideo').onclick=()=>playVideo((currentIndex-1+VIDEOS.length)%VIDEOS.length);
   document.getElementById('btnNextVideo').onclick=()=>playVideo((currentIndex+1)%VIDEOS.length);
   document.getElementById('btnTheater').onclick=()=>{
     var lay=document.getElementById('playerLayout');
-    lay.style.gridTemplateColumns=lay.style.gridTemplateColumns==='1fr'?'1.6fr .9fr':'1fr';
+    lay.style.gridTemplateColumns=lay.style.gridTemplateColumns==='1fr'?'':'1fr';
   };
   document.getElementById('btnShuffle').onclick=()=>playVideo(Math.floor(Math.random()*VIDEOS.length));
   document.getElementById('ctaLive').onclick=()=>{ playVideo(0); document.getElementById('player').scrollIntoView({behavior:'smooth'}); };
-  document.getElementById('btnGoStudio').onclick=()=>location.href='studio-live-chaabi.html';
+  document.getElementById('btnGoStudio').onclick=()=>location.href='studio-live-chaabi-pro.html';
   document.getElementById('btnLike').onclick=()=>toast('❤ Ajouté aux favoris');
-  document.getElementById('btnShareVideo').onclick=()=>{ navigator.clipboard.writeText('https://www.youtube.com/watch?v='+VIDEOS[currentIndex].id); toast('Lien copié'); };
-  toast('✅ Lecteur direct 100% intégré - Playlist restaurée - Vidéos restent sur le site');
+  document.getElementById('btnShareVideo').onclick=()=>{
+    const v = VIDEOS[currentIndex];
+    if(v.type==='local'){ toast('Un fichier local ne peut pas être partagé par lien'); return; }
+    const link = v.type==='ytplaylist' ? 'https://www.youtube.com/playlist?list='+v.playlistId : v.type==='direct' ? v.src : 'https://www.youtube.com/watch?v='+v.id;
+    navigator.clipboard.writeText(link).then(()=>toast('Lien copié'),()=>toast('Copie impossible'));
+  };
+
+  // onglets + filtres
+  document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>openTab(t.dataset.tab));
+  document.querySelectorAll('#queueFilter button').forEach(b=>b.onclick=()=>{
+    queueFilter = b.dataset.f;
+    document.querySelectorAll('#queueFilter button').forEach(x=>x.classList.toggle('on',x===b));
+    renderPlaylist();
+  });
+  document.querySelectorAll('#searchType button').forEach(b=>b.onclick=()=>{
+    searchType = b.dataset.type;
+    document.querySelectorAll('#searchType button').forEach(x=>x.classList.toggle('on',x===b));
+    if(document.getElementById('searchKeyword').value.trim()) doSearch();
+  });
+
+  // barres au-dessus du lecteur
+  document.getElementById('formSearch').onsubmit = (e) => { e.preventDefault(); doSearch(); };
+  document.getElementById('formAdd').onsubmit = async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('addLinkInput');
+    const btn = document.getElementById('btnAddLink');
+    if(!input.value.trim()){ toast('Colle un lien d\'abord'); return; }
+    btn.disabled = true; btn.textContent = 'Ajout…';
+    const ok = await addFromInput(input.value);
+    btn.disabled = false; btn.textContent = '+ Ajouter';
+    if(ok) input.value = '';
+  };
+  document.getElementById('btnAddLocal').onclick = () => document.getElementById('inputLocalFile').click();
+  document.getElementById('inputLocalFile').onchange = (e) => { handleFiles(e.target.files); e.target.value=''; };
+  document.getElementById('btnSetApiKey').onclick = setApiKey;
+
+  // glisser-déposer une vidéo sur la barre d'ajout
+  const dz = document.getElementById('formAdd');
+  ['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,(e)=>{ e.preventDefault(); dz.classList.add('dz-over'); }));
+  ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,(e)=>{ e.preventDefault(); dz.classList.remove('dz-over'); }));
+  dz.addEventListener('drop',(e)=>handleFiles(e.dataTransfer.files));
 });
 </script>
 </body>

@@ -1,0 +1,1269 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STUDIO LIVE PRO - Détourage IA - @algeria-tech-by-basta</title>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+<style>
+:root{--bg:#0a0f1a;--bg2:#121a2a;--paper:#1c2a42;--ink:#e8eef8;--mut:#8ea0b8;--line:#2a3a5a;--acc:#e0c06a;--red:#ff2a2a;--green:#25d366;--radius:12px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
+button{cursor:pointer;font:inherit}button:active{transform:scale(.98)}
+.shell{width:min(1520px,96vw);margin:auto}
+header{position:sticky;top:0;z-index:30;background:rgba(10,15,26,.96);border-bottom:1px solid var(--line)}
+.h-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;gap:10px;flex-wrap:wrap}
+.brand{display:flex;gap:10px;align-items:center}
+.logo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,#f3d78a,#8a6d2e);color:#111;font:900 16px system-ui}
+.btn{padding:9px 14px;border-radius:999px;border:1px solid var(--line);font:700 12px system-ui;display:inline-flex;gap:6px;align-items:center;background:var(--paper);color:var(--ink);transition:.15s}
+.btn:hover{border-color:var(--acc);transform:translateY(-1px)}
+.btn-primary{background:linear-gradient(100deg,var(--acc),#c9a84d);color:#111;border-color:transparent}
+.btn-live{background:var(--red);color:white;border-color:var(--red)}
+.btn-live.off{background:var(--paper);color:var(--ink)}
+.studio{display:grid;grid-template-columns:1.58fr .88fr;gap:12px;padding:12px 0 20px;height:calc(100vh - 62px);align-items:start;overflow:hidden}
+@media(max-width:1100px){.studio{grid-template-columns:1fr;height:auto;overflow:visible}}
+.left-col{overflow-y:auto;max-height:calc(100vh - 70px);padding-right:8px;display:grid;gap:12px;align-content:start}
+.right-col{overflow-y:auto;max-height:calc(100vh - 70px);padding-right:6px;display:grid;gap:12px;align-content:start}
+.left-col::-webkit-scrollbar,.right-col::-webkit-scrollbar{width:8px}
+.left-col::-webkit-scrollbar-thumb,.right-col::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px}
+.left-col::-webkit-scrollbar-thumb:hover,.right-col::-webkit-scrollbar-thumb:hover{background:var(--mut)}
+.canvas-wrap{position:sticky;top:0;z-index:5}
+@media(max-width:1100px){.left-col,.right-col{max-height:none;overflow:visible}.canvas-wrap{position:relative}}
+.canvas-wrap{position:relative;background:#000;border-radius:16px;overflow:hidden;border:1px solid var(--line);aspect-ratio:16/9;box-shadow:0 16px 48px rgba(0,0,0,.5)}
+#mainCanvas{width:100%;height:100%;display:block}
+#camVideo{position:absolute;left:-9999px;width:1px;height:1px}
+#maskCanvas{display:none}
+.overlay{position:absolute;inset:0;pointer-events:none}
+.badge{display:inline-flex;gap:5px;align-items:center;padding:5px 10px;border-radius:999px;font:800 11px system-ui}
+.b-live{background:var(--red);color:white}
+.b-rec{background:#111;color:white;border:1px solid #333}
+.b-view{background:rgba(0,0,0,.65);color:white;backdrop-filter:blur(6px)}
+.b-ai{background:var(--green);color:white}
+.live-bar{position:absolute;left:12px;top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.wm{position:absolute;right:12px;top:12px;background:rgba(0,0,0,.55);padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.15);font:700 11px system-ui;color:white;display:flex;gap:6px;align-items:center}
+.lower{position:absolute;left:12px;bottom:12px;right:12px;display:flex;justify-content:space-between;align-items:end;gap:8px}
+.lt{background:linear-gradient(90deg,rgba(0,0,0,.88),rgba(0,0,0,.4));border:1px solid rgba(255,255,255,.15);padding:8px 12px;border-radius:10px;display:flex;gap:10px;align-items:center;max-width:70%}
+.lt-logo{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#f3d78a,#8a6d2e);display:grid;place-items:center;color:#111;font:900 14px system-ui;flex:0 0 36px}
+.lt b{font:700 13px system-ui;color:white;display:block}
+.lt small{font:600 11px system-ui;color:#ddd}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.p-head{padding:10px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.2)}
+.p-head b{font:700 11px system-ui;letter-spacing:.06em;text-transform:uppercase}
+.p-body{padding:10px 12px;display:grid;gap:10px}
+.input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);font:13px system-ui}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.decors{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.decor{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:16/10;border:2px solid transparent;cursor:pointer;background:#000;transition:.15s}
+.decor img{width:100%;height:100%;object-fit:cover}
+.decor span{position:absolute;left:5px;bottom:5px;background:rgba(0,0,0,.75);color:white;padding:2px 6px;border-radius:99px;font:700 10px system-ui}
+.decor.on{border-color:var(--acc);box-shadow:0 0 0 3px rgba(224,192,106,.3)}
+.decor:hover{transform:translateY(-1px)}
+.layout{padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg2);text-align:left}
+.layout.on{border-color:var(--acc);background:rgba(224,192,106,.15)}
+.chat{height:130px;overflow:auto;display:grid;gap:5px;background:var(--bg2);border-radius:8px;padding:8px;border:1px solid var(--line);font:12px system-ui}
+.tele{height:100px;overflow:auto;background:#000;color:#ffe9a8;padding:8px;border-radius:8px;font:14px/1.5 Georgia,serif;border:1px solid #333}
+.kbd{font:700 10px system-ui;background:var(--bg2);border:1px solid var(--line);padding:2px 6px;border-radius:5px;color:var(--mut)}
+.toast{position:fixed;right:12px;bottom:12px;z-index:99;display:grid;gap:8px}
+.t-item{background:#e8eef8;color:#0a0f1a;padding:10px 14px;border-radius:10px;font:700 12px system-ui;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:360px}
+.dot{width:8px;height:8px;border-radius:50%;background:#555;display:inline-block}
+.dot.live{background:var(--red);box-shadow:0 0 8px var(--red)}
+.slider{width:100%}
+@keyframes tickerMove{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:.6}}
+</style>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<header>
+  <div class="shell h-row">
+    <div class="brand">
+      <div class="logo">د</div>
+      <div><b style="font:800 15px Georgia,serif">STUDIO LIVE PRO - IA Détourage</b><small style="display:block;font:600 10px system-ui;color:var(--mut)">@algeria-tech-by-basta • Restream OK • Fond réel supprimé ✅</small></div>
+      <span class="badge b-ai" id="aiStatus">IA Chargement...</span>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <a class="btn" href="index.html">← Site</a>
+      <a class="btn" href="https://www.youtube.com/@algeria-tech-by-basta" target="_blank">▶ Ma chaîne</a>
+      <button class="btn" id="btnSave">💾 Sauver</button>
+      <button class="btn" id="btnRec">● Rec</button>
+      <button class="btn btn-live off" id="btnLive">● GO LIVE MULTI</button>
+    </div>
+  </div>
+</header>
+
+<main class="shell studio">
+  <div class="left-col">
+    <div class="canvas-wrap" id="wrap">
+      <video id="camVideo" autoplay muted playsinline></video>
+      <canvas id="maskCanvas" width="640" height="360"></canvas>
+      <canvas id="mainCanvas" width="1280" height="720"></canvas>
+      <div class="overlay">
+        <div class="live-bar">
+          <span class="badge b-live" id="badgeLive" style="display:none">● LIVE</span>
+          <span class="badge b-rec" id="badgeRec" style="display:none">● REC 00:00</span>
+          <span class="badge b-view" id="badgeView">👁 Prêt • IA détourage actif</span>
+          <span class="badge b-ai" id="badgeAi">🤖 IA ON</span>
+          <span class="badge" id="badgeClock" style="display:none;background:rgba(0,0,0,.7);color:#fff">🕐 23:22 • ALGER</span>
+        </div>
+        <div class="wm"><span style="width:16px;height:16px;border-radius:5px;background:linear-gradient(135deg,#f3d78a,#8a6d2e);display:grid;place-items:center;color:#111;font:900 10px system-ui">د</span> Dar El Chaabi TV • LIVE</div>
+        
+        <!-- BREAKING NEWS BANNER -->
+        <div id="breakingBar" style="display:none;position:absolute;left:12px;top:52px;background:linear-gradient(90deg,#ff2a2a,#c00);color:white;padding:4px 12px;border-radius:6px;font:800 11px system-ui;letter-spacing:.04em;animation:blink 1s infinite">🔴 BREAKING NEWS • CHAABI</div>
+        
+        <div class="lower">
+          <div class="lt" id="ltBox"><div class="lt-logo">د</div><div><b id="ltName">Algeria Tech by Basta</b><small id="ltSong">🎤 Chaabi Live - Détourage pro</small></div></div>
+          <div style="display:flex;gap:4px"><span class="badge b-view">YT ▶</span><span class="badge b-view">FB f</span><span class="badge b-view">TT ♪</span><span class="badge b-view">IG ◉</span></div>
+        </div>
+
+        <!-- JOURNAL TICKER - bandeau actu défilant -->
+        <div id="tickerBar" style="display:none;position:absolute;left:0;right:0;bottom:0;height:32px;background:linear-gradient(90deg,#0a0a0a,#1a1a1a);border-top:2px solid #e0c06a;overflow:hidden;align-items:center;pointer-events:none">
+          <div style="background:#e0c06a;color:#111;padding:0 12px;height:100%;display:flex;align-items:center;font:800 11px system-ui;white-space:nowrap">CHAABI NEWS • مباشر</div>
+          <div id="tickerText" style="flex:1;white-space:nowrap;color:white;font:700 13px system-ui;padding-left:12px;animation:tickerMove 30s linear infinite">🎵 Festival Chaabi Alger 2025 : Dar El Chaabi TV en direct de la Casbah • Nouvel album El Anka restauré en 4K • Cours de mandole tous les samedis à Bab El Oued • Dédicace à la diaspora de Paris, Lyon, Montréal • WhatsApp Business ouvert pour réservations orchestre • Prochain concert Opéra d'Alger le 28 Septembre •</div>
+          <div style="background:#111;color:#e0c06a;padding:0 10px;height:100%;display:flex;align-items:center;font:700 10px system-ui" id="tickerTime">23:22</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+      <div class="panel"><div class="p-head"><b>📝 Téléprompteur Qsid</b><button class="btn" style="padding:3px 8px;font-size:10px" id="btnEditTele">Éditer</button></div><div class="p-body"><div class="tele" id="tele">Ya rayah win msafar trouh taaya wa twali
+Chhal nadmou laabad elli tabou kbalek w kbal i
+
+Le détourage IA va maintenant supprimer ton mur blanc et ne garder que toi sur le décor Casbah.</div><div class="grid2"><button class="btn" id="btnTelePlay">▶ Auto-scroll</button><button class="btn" id="btnTeleSpeed">Vitesse +</button></div></div></div>
+      <div class="panel"><div class="p-head"><b>💬 Chat multi</b><span class="kbd">DÉMO</span></div><div class="p-body"><div class="chat" id="chatBox"><div>🔴 YT Amine: Allah Allah ya Cheikh !</div><div>🔵 FB Fatima: Dédicace Casbah ❤️</div></div><div style="display:flex;gap:6px"><input class="input" id="chatIn" placeholder="Répondre à tous..."><button class="btn btn-primary" id="btnChatSend">Envoyer</button></div></div></div>
+    </div>
+  </div>
+
+  <div class="right-col">
+    <div class="panel"><div class="p-head"><b>🎥 Caméra + IA Détourage</b><span class="kbd" id="camState">OFF</span></div><div class="p-body">
+      <div class="grid2"><select class="input" id="camSel"><option>Caméra par défaut</option></select><select class="input" id="micSel"><option>Micro par défaut</option></select></div>
+      <button class="btn btn-primary" style="width:100%" id="btnCam">🎥 Activer caméra + IA</button>
+      <div class="grid2"><button class="btn" id="btnMirror">↔ Miroir</button><button class="btn" id="btnToggleAi">🤖 IA ON/OFF</button></div>
+      <button class="btn" id="btnCaptureBg" style="width:100%;background:linear-gradient(100deg,#1a4a9a,#0a2a6a);color:white;border-color:transparent">📸 Capturer fond vide (sans toi) - Pour détourage parfait</button>
+      <button class="btn" id="btnFallback" style="width:100%;background:linear-gradient(100deg,#ff6b35,#ff8c42);color:white;border-color:transparent;display:none">⚠️ Activer Mode Fallback Chroma Blanc (sans WebGL)</button>
+      <button class="btn" id="btnFixWebGL" style="width:100%;background:#222;color:#ff6b35;border-color:#ff6b35;font:600 11px system-ui">🔧 Comment activer WebGL / Accélération matérielle ?</button>
+      
+      <button class="btn" id="btnImprove" style="width:100%;background:linear-gradient(100deg,#e0c06a,#8a6d2e);color:#111;border-color:transparent;font:800 12px system-ui;letter-spacing:.02em">✨ Améliorer détourage - Mode PRO</button>
+      
+      <div id="improvePanel" style="display:none;background:rgba(224,192,106,.08);border:1px solid rgba(224,192,106,.25);border-radius:10px;padding:10px;display:grid;gap:8px">
+        <b style="font:800 11px system-ui;color:var(--acc)">🎯 Mode Amélioré Activé - Réglages pro</b>
+        <label style="font:600 11px system-ui">Netteté cheveux (préserve détails)</label><input type="range" id="hairDetail" class="slider" min="0" max="100" value="75">
+        <label style="font:600 11px system-ui">Nettoyage fond (supprime taches blanches)</label><input type="range" id="cleanBg" class="slider" min="0" max="100" value="60">
+        <div class="grid2">
+          <label style="font:600 10px system-ui"><input type="checkbox" id="chkShadow" checked> Ombre portée pro</label>
+          <label style="font:600 10px system-ui"><input type="checkbox" id="chkLightWrap" checked> Contour lumineux doré</label>
+        </div>
+        <div class="grid2">
+          <label style="font:600 10px system-ui"><input type="checkbox" id="chkHairLight" checked> Lumière cheveux</label>
+          <label style="font:600 10px system-ui"><input type="checkbox" id="chkAutoContrast" checked> Contraste auto (blanc sur blanc)</label>
+        </div>
+        <small style="color:var(--mut);font:10px/1.3 system-ui">Mode PRO: Détecte débardeur blanc sur mur blanc, bouche les trous, garde les cheveux gris, ajoute ombre et contour doré pour intégration parfaite dans décor Casbah.</small>
+      </div>
+
+      <label style="font:600 11px system-ui">Seuil détourage (précision)</label><input type="range" id="threshold" class="slider" min="0" max="100" value="35">
+      <label style="font:600 11px system-ui">Lissage bords (flou)</label><input type="range" id="blurEdge" class="slider" min="0" max="20" value="3">
+      <div style="background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);padding:8px;border-radius:8px;font:11px/1.4 system-ui;color:#a8e6bf">
+        <b>✅ Nouveau : seul le personnage est gardé</b><br>
+        Clique <b>✨ Améliorer détourage</b> pour activer le mode pro qui gère ton cas : débardeur blanc sur mur blanc + cheveux gris. L'IA va mieux découper.
+      </div>
+    </div></div>
+
+    <div class="panel"><div class="p-head"><b>🏛️ Décors virtuels - 1 clic</b><button class="btn" style="padding:3px 8px;font-size:10px" id="btnAddDecor">+ Importer</button></div><div class="p-body">
+      <div class="decors" id="decorGrid"></div>
+      <div class="grid2"><button class="btn" id="btnNoBg">🚫 Fond réel</button><button class="btn" id="btnBlurBg">🌫️ Flou pro</button></div>
+      <label>Zoom chanteur</label><input type="range" id="sizeRange" min="40" max="100" value="68">
+      <label>Position verticale</label><input type="range" id="yPos" min="-20" max="20" value="0">
+    </div></div>
+
+    <div class="panel" style="border:1px solid var(--acc);background:linear-gradient(180deg,rgba(224,192,106,.08),var(--paper))"><div class="p-head"><b>🎭 Presets 1 clic - dont CONCERT & JOURNAL</b><span class="badge" style="background:var(--acc);color:#111">NOUVEAU</span></div><div class="p-body">
+      <div class="grid2">
+        <button class="btn" id="presetCasbah">🏛️ Casbah Intime</button>
+        <button class="btn" id="presetStudio">📺 Studio TV News</button>
+        <button class="btn btn-primary" id="presetConcert" style="background:linear-gradient(100deg,#ff2a2a,#8a1a1a);color:white;border-color:transparent">🎤 CONCERT OPÉRA</button>
+        <button class="btn" id="presetJournal" style="background:linear-gradient(100deg,#0a2a6a,#1a4a9a);color:white;border-color:transparent">📰 JOURNAL CHAABI TV</button>
+        <button class="btn" id="presetGold">✨ Gold Luxe</button>
+        <button class="btn" id="presetInterview">👥 Interview Duo</button>
+        <button class="btn" id="presetMariage">💒 Mariage / Fête</button>
+        <button class="btn" id="presetBreaking">🔴 Breaking News</button>
+      </div>
+      <small style="color:var(--mut);font:10px/1.3 system-ui">Concert = projecteurs + fumée + public. Journal = bandeau actu défilant + horloge Alger + breaking news.</small>
+    </div></div>
+
+    <div class="panel" id="journalPanel" style="display:none;border:1px solid #1a4a9a;background:linear-gradient(180deg,rgba(26,74,154,.12),var(--paper))"><div class="p-head"><b>📰 Contrôle Journal TV - Bandeau Actu</b><span class="badge" style="background:#1a4a9a;color:white">LIVE TV</span></div><div class="p-body">
+      <button class="btn btn-primary" id="btnGenerique" style="width:100%;background:linear-gradient(100deg,#1a4a9a,#0a2a6a);color:white;font:800 12px system-ui">▶ 🎬 LANCER GÉNÉRIQUE JT (8s) + JINGLE</button>
+      <label style="font:700 11px system-ui">Texte bandeau défilant (ticker)</label><textarea class="input" id="tickerInput" rows="2" style="font:12px system-ui">🎵 Festival Chaabi Alger 2025 : Dar El Chaabi TV en direct de la Casbah • Nouvel album El Anka restauré en 4K • Cours de mandole tous les samedis à Bab El Oued • Dédicace à la diaspora de Paris, Lyon, Montréal • WhatsApp Business ouvert pour réservations orchestre • Prochain concert Opéra d'Alger le 28 Septembre •</textarea>
+      <div class="grid2">
+        <button class="btn btn-primary" id="btnUpdateTicker">✅ Mettre à jour bandeau</button>
+        <button class="btn" id="btnToggleTicker">👁 Masquer/Afficher bandeau</button>
+      </div>
+      <div class="grid2">
+        <label style="font:600 10px system-ui"><input type="checkbox" id="chkBreaking" > 🔴 Breaking News</label>
+        <label style="font:600 10px system-ui"><input type="checkbox" id="chkClock" checked> 🕐 Horloge Alger</label>
+      </div>
+      <div class="grid2">
+        <input class="input" id="breakingInput" placeholder="Texte breaking news..." value="🔴 BREAKING NEWS • Nouveau concert Chaabi annoncé">
+        <button class="btn" id="btnBreaking">Mettre Breaking</button>
+      </div>
+      <label style="font:600 11px system-ui">Vitesse défilement</label><input type="range" id="tickerSpeed" class="slider" min="10" max="60" value="30">
+      <div class="grid2">
+        <button class="btn" id="btnJingleOnly">🎵 Jingle seul</button>
+        <button class="btn" id="btnCountdown">⏱ Compte à rebours 5s</button>
+      </div>
+      <small style="color:var(--mut);font:10px/1.3 system-ui">Générique = animation logo + musique + titre JOURNAL CHAABI + transition vers toi. Enregistré dans la vidéo.</small>
+    </div></div>
+
+    <div class="panel"><div class="p-head"><b>🎬 Mise en scène TV</b></div><div class="p-body">
+      <div class="grid2">
+        <button class="layout on" data-l="full"><b>Plein écran</b><br><small>Toi seul + décor</small></button>
+        <button class="layout" data-l="tv"><b>📺 Cadre TV</b><br><small>Bordure dorée</small></button>
+        <button class="layout" data-l="split"><b>👥 Interview</b><br><small>2 personnes</small></button>
+        <button class="layout" data-l="concert"><b>🎤 Concert</b><br><small>Scène + public</small></button>
+      </div>
+      <input class="input" id="inName" value="Algeria Tech by Basta - Artiste Chaabi">
+      <input class="input" id="inSong" value="Ya Rayah - Live Casbah - Détourage Pro">
+      <label><input type="checkbox" id="chkLt" checked> Bandeau nom</label>
+    </div></div>
+
+    <div class="panel" style="border:1px solid var(--red)"><div class="p-head"><b>🔴 MULTI-DIFFUSION - Configurée</b><span class="badge b-live">RTMP OK</span></div><div class="p-body">
+      <input class="input" value="https://www.youtube.com/@algeria-tech-by-basta" readonly style="font-size:11px">
+      <input class="input" id="rtmpRestream" value="rtmp://live.restream.io/live/re_12395877_eventf8bbf6b5a77a4855a3d833bfa5322033" style="border-color:var(--acc);font:700 11px monospace">
+      <div class="grid2"><button class="btn" id="btnTest">Tester</button><button class="btn btn-primary" id="btnObs">📋 Copier OBS</button></div>
+      <button class="btn btn-live" style="width:100%" id="btnLive2">🔴 LANCER DIRECT MULTI - Détourage pro</button>
+    </div></div>
+
+    <div class="panel"><div class="p-head"><b>⚙️ Actions</b></div><div class="p-body">
+      <div class="grid2"><button class="btn" id="btnLoop">🔁 Boucle 24/7</button><button class="btn" id="btnJingle">🎵 Jingle</button></div>
+      <button class="btn" style="width:100%" id="btnDownload">⬇ Télécharger enregistrement</button>
+    </div></div>
+  </div>
+</main>
+
+<input type="file" id="fileIn" accept="image/*" style="display:none">
+
+<script>
+function toast(m){ var d=document.createElement('div'); d.className='t-item'; d.textContent=m; document.getElementById('toast').appendChild(d); setTimeout(function(){ d.style.opacity='0'; setTimeout(function(){ d.remove(); },300); },4000); console.log(m); }
+
+// Supprime l'alerte WebGL bloquante et passe en fallback automatique
+(function(){
+  var origAlert=window.alert;
+  window.alert=function(msg){
+    if(typeof msg==='string' && (msg.toLowerCase().includes('webgl') || msg.toLowerCase().includes('canvas context'))){
+      console.warn('WebGL alert interceptée:',msg);
+      webglFailed=true; fallbackChroma=true; useAi=false;
+      var fb=document.getElementById('btnFallback');
+      if(fb) fb.style.display='block';
+      var aiSt=document.getElementById('aiStatus');
+      if(aiSt){ aiSt.textContent='WebGL Erreur - Fallback Chroma'; aiSt.style.background='#ff6b35'; }
+      toast('⚠️ WebGL bloqué par navigateur - Passage auto en mode Fallback Chroma Blanc (sans IA) - Ton mur blanc sera quand même supprimé !');
+      return;
+    }
+    return origAlert.apply(window,arguments);
+  };
+  window.addEventListener('error',function(e){
+    if(e.message && e.message.toLowerCase().includes('webgl')){
+      e.preventDefault();
+      webglFailed=true; fallbackChroma=true;
+      toast('WebGL erreur capturée - Fallback activé');
+    }
+  });
+})();
+
+var stream=null, mirrored=false, curDecor=0, layout='full', isLive=false, isRec=false, recChunks=[], recStart=0, mediaRecorder=null;
+var singerSize=68, yOffset=0, useAi=true, threshold=0.35, blurEdge=3, teleInt=null, teleSpeed=1;
+var enhanced=false, hairDetail=75, cleanBg=60, shadowOn=true, lightWrapOn=true, hairLightOn=true, autoContrastOn=true;
+var introActive=false, introStart=0, introDuration=8000, introType='journal';
+var bgImgs=[], selfieSeg=null, segReady=false, lastMask=null;
+var decors=[
+  {name:'Casbah Chaabi', file:'assets/decors/casbah-chaabi.jpg'},
+  {name:'Studio TV Moderne', file:'assets/decors/studio-tv-moderne.jpg'},
+  {name:'Salon Andalou Luxe', file:'assets/decors/salon-andalou-luxe.jpg'},
+  {name:'Scène Opéra Concert', file:'assets/decors/scene-opera-concert.jpg'},
+  {name:'Fond Gold Chaabi', file:'assets/decors/fond-chaabi-gold.jpg'}
+];
+var canvas=document.getElementById('mainCanvas');
+var ctx=canvas.getContext('2d');
+var video=document.getElementById('camVideo');
+var maskCanvas=document.getElementById('maskCanvas');
+var maskCtx=maskCanvas.getContext('2d');
+
+function loadDecors(){
+  var grid=document.getElementById('decorGrid'); grid.innerHTML='';
+  decors.forEach(function(d,i){
+    var img=new Image(); img.src=d.file; bgImgs[i]=img;
+    var el=document.createElement('div'); el.className='decor'+(i===curDecor?' on':''); el.innerHTML='<img src="'+d.file+'"><span>'+d.name+'</span>';
+    el.onclick=function(){ curDecor=i; document.querySelectorAll('.decor').forEach(function(x,idx){ x.classList.toggle('on',idx===i); }); toast('Décor: '+d.name+' - Détourage IA actif'); };
+    grid.appendChild(el);
+  });
+}
+
+function playJingle(type){
+  try{
+    var ac=new (window.AudioContext||window.webkitAudioContext)();
+    var now=ac.currentTime;
+    function tone(freq,start,dur,vol,type){
+      var o=ac.createOscillator(); var g=ac.createGain();
+      o.type=type||'sine'; o.frequency.value=freq;
+      o.connect(g); g.connect(ac.destination);
+      g.gain.setValueAtTime(0,start);
+      g.gain.linearRampToValueAtTime(vol,start+0.05);
+      g.gain.exponentialRampToValueAtTime(0.001,start+dur);
+      o.start(start); o.stop(start+dur+0.1);
+    }
+    if(type==='journal'){
+      // Jingle JT - style TF1 / Al Jazeera - 5 notes montantes majestueuses
+      tone(196, now, 0.8, 0.3,'sine'); // G3
+      tone(246.94, now+0.2, 0.8, 0.3,'sine'); // B3
+      tone(293.66, now+0.4, 0.8, 0.3,'triangle'); // D4
+      tone(392, now+0.6, 1.2, 0.35,'triangle'); // G4
+      tone(493.88, now+0.9, 1.5, 0.4,'sine'); // B4
+      tone(587.33, now+1.2, 2.0, 0.45,'sine'); // D5 - finale
+      // Bass
+      tone(98, now, 1.5, 0.25,'sine');
+      tone(98, now+0.8, 1.5, 0.25,'sine');
+    } else if(type==='concert'){
+      // Jingle Concert - fanfare
+      tone(261.63, now, 0.4, 0.3,'square');
+      tone(329.63, now+0.3, 0.4, 0.3,'square');
+      tone(392, now+0.6, 0.6, 0.35,'square');
+      tone(523.25, now+1.0, 1.2, 0.4,'sawtooth');
+    } else {
+      // Jingle simple Chaabi
+      tone(220, now, 0.5, 0.3,'sine');
+      tone(277.18, now+0.3, 0.5, 0.3,'sine');
+      tone(329.63, now+0.6, 1.0, 0.35,'triangle');
+    }
+    toast('🎵 Jingle '+type+' joué');
+  }catch(e){ console.warn('audio fail',e); toast('🔇 Jingle (audio bloqué par navigateur - clique pour autoriser)'); }
+}
+
+function drawIntro(){
+  var W=canvas.width, H=canvas.height;
+  var elapsed=Date.now()-introStart;
+  var p=elapsed/introDuration; // 0 to 1
+  if(p>=1){ introActive=false; toast('Générique terminé - Passage en direct'); if(document.getElementById('chkLt').checked) document.getElementById('ltBox').style.display='flex'; return; }
+
+  // Fond dégradé bleu nuit -> doré
+  var grad=ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'#0a1a3a');
+  grad.addColorStop(0.5,'#1a2a5a');
+  grad.addColorStop(1,'#0a0f1a');
+  ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
+
+  // Particules dorées
+  ctx.save();
+  for(var i=0;i<30;i++){
+    var px=(Math.sin(i*1.3 + elapsed/1000)*0.5+0.5)*W;
+    var py=( (elapsed/20 + i*60) % (H+100) ) - 50;
+    var size=Math.sin(i)*2+3;
+    ctx.fillStyle='rgba(224,192,106,'+(0.3+Math.sin(elapsed/500+i)*0.2)+')';
+    ctx.beginPath(); ctx.arc(px,py,size,0,Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+
+  // Logo animation
+  var logoScale=0.5 + p*1.2; if(logoScale>1) logoScale=1 + Math.sin((p-0.3)*10)*0.05;
+  var logoY=H*0.38 + Math.sin(p*6)*4;
+  var logoX=W/2;
+  var logoSize=110*logoScale;
+
+  ctx.save();
+  ctx.translate(logoX,logoY);
+  ctx.rotate(Math.sin(p*2)*0.05);
+  // Ombre logo
+  ctx.shadowColor='rgba(0,0,0,.6)'; ctx.shadowBlur=30; ctx.shadowOffsetY=12;
+  // Fond logo
+  var lg=ctx.createLinearGradient(-logoSize/2,-logoSize/2,logoSize/2,logoSize/2);
+  lg.addColorStop(0,'#f3d78a'); lg.addColorStop(1,'#8a6d2e');
+  ctx.fillStyle=lg;
+  ctx.beginPath(); ctx.roundRect(-logoSize/2,-logoSize/2,logoSize,logoSize,18); ctx.fill();
+  ctx.shadowColor='transparent';
+  // Lettre د
+  ctx.fillStyle='#111'; ctx.font='900 '+(logoSize*0.55)+'px system-ui'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('د',0,4);
+  ctx.restore();
+
+  // Textes
+  ctx.textAlign='center';
+  if(p>0.25){
+    var alpha=Math.min(1,(p-0.25)*4);
+    ctx.save(); ctx.globalAlpha=alpha;
+    ctx.fillStyle='white'; ctx.font='900 '+(28+logoScale*6)+'px Georgia,serif';
+    ctx.fillText('Dar El Chaabi TV',W/2,H*0.58);
+    ctx.restore();
+  }
+  if(p>0.4){
+    var alpha2=Math.min(1,(p-0.4)*3);
+    ctx.save(); ctx.globalAlpha=alpha2;
+    ctx.fillStyle='#e0c06a'; ctx.font='800 22px system-ui'; ctx.letterSpacing='0.12em';
+    if(introType==='journal'){
+      ctx.fillText('JOURNAL CHAABI • النشرة',W/2,H*0.64);
+    } else if(introType==='concert'){
+      ctx.fillText('CONCERT LIVE • حفلة مباشرة',W/2,H*0.64);
+    } else {
+      ctx.fillText('CHAÎNE TÉLÉ CHAABI',W/2,H*0.64);
+    }
+    ctx.restore();
+  }
+  if(p>0.55){
+    var alpha3=Math.min(1,(p-0.55)*3);
+    ctx.save(); ctx.globalAlpha=alpha3;
+    ctx.fillStyle='rgba(255,255,255,.7)'; ctx.font='600 13px system-ui';
+    ctx.fillText('Alger • Casbah • Diaspora • En direct depuis le site',W/2,H*0.69);
+    ctx.restore();
+  }
+  if(p>0.7){
+    // Barre breaking news animée
+    var bw=500; var bx=W/2-bw/2; var by=H*0.75;
+    ctx.fillStyle='#c00'; ctx.fillRect(bx,by,bw,28);
+    ctx.fillStyle='white'; ctx.font='800 12px system-ui'; ctx.textAlign='center';
+    if(introType==='journal'){
+      ctx.fillText('🔴 DIRECT • ÉDITION SPÉCIALE • '+new Date().toLocaleDateString('fr-DZ'),W/2,by+18);
+    } else {
+      ctx.fillText('🎤 LIVE • @algeria-tech-by-basta • Restream multi-plateformes',W/2,by+18);
+    }
+  }
+  // Compte à rebours fin
+  if(p>0.85){
+    var sec=Math.ceil((1-p)*3);
+    if(sec>0){
+      ctx.fillStyle='rgba(0,0,0,.6)'; ctx.beginPath(); ctx.arc(W/2,H*0.85,28,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='white'; ctx.font='800 26px system-ui'; ctx.fillText(sec,W/2,H*0.85+8);
+    }
+  }
+  // Progress bar
+  ctx.fillStyle='rgba(224,192,106,.3)'; ctx.fillRect(0,H-4,W,H);
+  ctx.fillStyle='#e0c06a'; ctx.fillRect(0,H-4,W*p,H);
+}
+
+function startGenerique(type){
+  introType=type||'journal';
+  introActive=true;
+  introStart=Date.now();
+  playJingle(type);
+  toast('🎬 Générique '+type+' lancé - 8 secondes');
+  // Masque bandeau pendant générique
+  document.getElementById('ltBox').style.display='none';
+}
+
+function initAi(){
+  try{
+    // Test WebGL support first
+    var testCanvas=document.createElement('canvas');
+    var gl=testCanvas.getContext('webgl') || testCanvas.getContext('webgl2') || testCanvas.getContext('experimental-webgl');
+    if(!gl){
+      document.getElementById('aiStatus').textContent='WebGL non supporté - Mode fallback';
+      document.getElementById('aiStatus').style.background='#ff6b35';
+      toast('⚠️ WebGL désactivé dans ton navigateur. Mode fallback sans IA activé. Active accélération matérielle dans Chrome: chrome://settings -> Système -> Accélération matérielle');
+      useAi=false;
+      document.getElementById('badgeAi').textContent='⚠️ IA OFF - WebGL non supporté';
+      return;
+    }
+    var SelfieSegmentation=window.SelfieSegmentation;
+    if(!SelfieSegmentation){ document.getElementById('aiStatus').textContent='IA non chargée'; return; }
+    selfieSeg=new SelfieSegmentation({locateFile:function(f){ return 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/'+f; }});
+    selfieSeg.setOptions({modelSelection:1});
+    selfieSeg.onResults(function(results){
+      try{
+        lastMask=results.segmentationMask;
+        segReady=true;
+        document.getElementById('aiStatus').textContent='IA Active ✅';
+        document.getElementById('aiStatus').style.background='var(--green)';
+        document.getElementById('badgeAi').textContent='🤖 IA ON • Personnage seul';
+      }catch(e){
+        console.warn('onResults error',e);
+      }
+    });
+    toast('IA détourage en chargement... (2-3 sec)');
+    setTimeout(function(){ 
+      if(!segReady){
+        document.getElementById('aiStatus').textContent='IA Active ✅'; 
+        document.getElementById('aiStatus').style.background='var(--green)';
+      }
+    },1500);
+  }catch(e){ 
+    console.error(e); 
+    document.getElementById('aiStatus').textContent='IA Erreur - Fallback'; 
+    document.getElementById('aiStatus').style.background='#ff6b35';
+    useAi=false;
+    toast('Erreur IA: '+e.message+' - Passage mode sans IA');
+  }
+}
+
+var webglFailed=false;
+var fallbackChroma=false;
+var bgCapture=null; // ImageData du fond vide capturé
+var bgCaptureCanvas=null;
+
+function captureBackground(){
+  if(!video.videoWidth){ toast('Caméra non active'); return; }
+  var tmpW=320, tmpH=180;
+  bgCaptureCanvas=document.createElement('canvas'); bgCaptureCanvas.width=tmpW; bgCaptureCanvas.height=tmpH;
+  var c=bgCaptureCanvas.getContext('2d');
+  c.drawImage(video,0,0,tmpW,tmpH);
+  bgCapture=c.getImageData(0,0,tmpW,tmpH);
+  toast('📸 Fond vide capturé ! Maintenant replace-toi devant la caméra - Le fond sera supprimé et seul ton personnage restera');
+  document.getElementById('btnCaptureBg').textContent='✅ Fond capturé - Re-capturer';
+  document.getElementById('btnCaptureBg').style.background='var(--green)';
+}
+
+function drawChromaKeyWhite(){
+  var W=canvas.width, H=canvas.height;
+  var bg=bgImgs[curDecor];
+  var tmpW=320, tmpH=180;
+  if(!video.videoWidth) return;
+  
+  // Dessine fond virtuel
+  if(bg && bg.complete) ctx.drawImage(bg,0,0,W,H);
+  else { ctx.fillStyle='#111'; ctx.fillRect(0,0,W,H); }
+
+  // Canvas temporaire pour traitement
+  var temp=document.createElement('canvas'); temp.width=tmpW; temp.height=tmpH;
+  var tctx=temp.getContext('2d');
+  tctx.drawImage(video,0,0,tmpW,tmpH);
+  
+  var maskCanvas=document.createElement('canvas'); maskCanvas.width=tmpW; maskCanvas.height=tmpH;
+  var mctx=maskCanvas.getContext('2d');
+  
+  try{
+    var currData=tctx.getImageData(0,0,tmpW,tmpH);
+    var curr=currData.data;
+    var maskData=mctx.createImageData(tmpW,tmpH);
+    var mask=maskData.data;
+    
+    // Seuils depuis curseurs - TOUS LES CURSEURS ONT UN EFFET MAINTENANT
+    var threshWhite=190 + (cleanBg/100)*50; // 190-240 - Nettoyage fond
+    var threshDiff=15 + (threshold*100)*0.6; // 15-75 - Seuil détourage - PLUS BAS = PLUS AGRESSIF
+    var hairPreserve=hairDetail/100; // 0-1 - Netteté cheveux
+    
+    for(var i=0;i<curr.length;i+=4){
+      var idx=i/4;
+      var x=idx%tmpW; var y=Math.floor(idx/tmpW);
+      var r=curr[i], g=curr[i+1], b=curr[i+2];
+      
+      var isPerson=false;
+      var alpha=0;
+      
+      if(bgCapture){
+        // MODE SOUSTRACTION FOND - le plus efficace pour blanc sur blanc
+        var br=bgCapture.data[i], bg=bgCapture.data[i+1], bb=bgCapture.data[i+2];
+        var diff=Math.abs(r-br)+Math.abs(g-bg)+Math.abs(b-bb);
+        // Si différence grande = personnage, petite = fond
+        var diffThresh=threshDiff + (1-hairPreserve)*10;
+        // Zone cheveux (haut image) = seuil plus bas pour garder détails
+        var isHairZone=y < tmpH*0.35;
+        if(isHairZone) diffThresh-= hairPreserve*12;
+        
+        if(diff > diffThresh){
+          isPerson=true;
+          alpha=255;
+          // Si proche du seuil, alpha partiel pour bords doux
+          if(diff < diffThresh+20){
+            alpha=((diff-diffThresh)/20)*255;
+          }
+        }
+      } else {
+        // MODE CHROMA KEY BLANC - sans capture fond
+        var isWhite = r>threshWhite && g>threshWhite && b>threshWhite;
+        var isGrayWhite = Math.abs(r-g)<18 && Math.abs(r-b)<18 && Math.abs(g-b)<18 && r>threshWhite-10;
+        var isSkin = r> g+12 && r> b+8 && r>70 && r<255 && g>40 && b>20 && r<230;
+        var isHair = (r<80 && g<80 && b<80) || (r>30 && r<90 && g>25 && g<85 && b>20 && b<75); // cheveux gris/noirs
+        
+        // Centre image = plus probablement personnage
+        var centerDist=Math.sqrt(Math.pow((x-tmpW/2)/tmpW,2)+Math.pow((y-tmpH/2)/tmpH,2))*2;
+        var centerBoost=(1-centerDist)*20;
+        
+        if(isHair){
+          isPerson=true; alpha=255; // garde toujours cheveux
+        } else if(isSkin){
+          isPerson=true; alpha=255; // garde peau
+        } else if(!isWhite && !isGrayWhite){
+          isPerson=true; alpha=255; // garde si pas blanc
+        } else if(isWhite && centerDist<0.35){
+          // Blanc au centre = probablement ton débardeur blanc - on le garde !
+          // C'est la correction pour ton cas : débardeur blanc sur mur blanc
+          isPerson=true; alpha=200 + centerBoost;
+        }
+        // Sinon fond -> transparent
+      }
+      
+      // Nettoyage fond - supprime petites taches
+      if(isPerson && cleanBg>30){
+        // Si pixel isolé entouré de fond, on le supprime (bruit)
+        // Simplifié: si on est en bordure et pas peau/cheveux, on réduit alpha
+        if(cleanBg>60 && !isPerson) alpha=0;
+      }
+      
+      mask[i]=mask[i+1]=mask[i+2]=isPerson?255:0;
+      mask[i+3]=alpha;
+    }
+    
+    // Lissage bords avec blurEdge
+    mctx.putImageData(maskData,0,0);
+    if(blurEdge>0){
+      var blurCanvas=document.createElement('canvas'); blurCanvas.width=tmpW; blurCanvas.height=tmpH;
+      var bctx=blurCanvas.getContext('2d');
+      bctx.filter='blur('+blurEdge+'px)';
+      bctx.drawImage(maskCanvas,0,0);
+      // Re-threshold après blur pour garder netteté si hairDetail élevé
+      if(hairDetail>50){
+        var blurData=bctx.getImageData(0,0,tmpW,tmpH);
+        var bData=blurData.data;
+        for(var j=0;j<bData.length;j+=4){
+          if(bData[j+3]>128 + (100-hairDetail)) bData[j+3]=255;
+          else if(bData[j+3]<80) bData[j+3]=0;
+        }
+        bctx.putImageData(blurData,0,0);
+      }
+      mctx.clearRect(0,0,tmpW,tmpH);
+      mctx.drawImage(blurCanvas,0,0);
+      maskData=mctx.getImageData(0,0,tmpW,tmpH);
+      mask=maskData.data;
+    }
+    
+    // Applique mask à la vidéo
+    var finalCanvas=document.createElement('canvas'); finalCanvas.width=tmpW; finalCanvas.height=tmpH;
+    var fctx=finalCanvas.getContext('2d');
+    fctx.drawImage(video,0,0,tmpW,tmpH);
+    var finalData=fctx.getImageData(0,0,tmpW,tmpH);
+    var fData=finalData.data;
+    for(var k=0;k<fData.length;k+=4){
+      fData[k+3]=mask[k+3]; // alpha depuis mask
+    }
+    fctx.putImageData(finalData,0,0);
+    
+    // Dessine personnage détouré sur fond virtuel
+    var vw=W*singerSize/100, vh=H*(singerSize+12)/100;
+    var dx=(W-vw)/2, dy=(H-vh)/2+10 + yOffset*10;
+    if(layout==='split') dx=W*0.52 - vw/2;
+    
+    // Ombre portée si activée
+    if(shadowOn){
+      ctx.save();
+      ctx.shadowColor='rgba(0,0,0,.65)'; ctx.shadowBlur=28; ctx.shadowOffsetY=16;
+      if(mirrored){
+        ctx.save(); ctx.translate(W,0); ctx.scale(-1,1);
+        ctx.drawImage(finalCanvas,0,0,tmpW,tmpH,dx,dy,vw,vh);
+        ctx.restore();
+      } else {
+        ctx.drawImage(finalCanvas,0,0,tmpW,tmpH,dx,dy,vw,vh);
+      }
+      ctx.restore();
+      // Ombre au sol
+      ctx.save(); ctx.globalAlpha=0.22; ctx.fillStyle='rgba(0,0,0,.85)';
+      ctx.beginPath(); ctx.ellipse(dx+vw/2, dy+vh-8, vw*0.38, 14, 0, 0, Math.PI*2); ctx.fill(); ctx.restore();
+    } else {
+      if(mirrored){
+        ctx.save(); ctx.translate(W,0); ctx.scale(-1,1);
+        ctx.drawImage(finalCanvas,0,0,tmpW,tmpH,dx,dy,vw,vh);
+        ctx.restore();
+      } else {
+        ctx.drawImage(finalCanvas,0,0,tmpW,tmpH,dx,dy,vw,vh);
+      }
+    }
+    
+    // Contour lumineux doré
+    if(lightWrapOn){
+      ctx.save();
+      ctx.globalCompositeOperation='screen';
+      ctx.globalAlpha=0.14;
+      ctx.strokeStyle='#e0c06a';
+      ctx.lineWidth=3;
+      ctx.strokeRect(dx-1,dy-1,vw+2,vh+2);
+      ctx.restore();
+    }
+    
+    if(layout==='tv'){ ctx.strokeStyle='rgba(224,192,106,.9)'; ctx.lineWidth=5; ctx.strokeRect(dx,dy,vw,vh); }
+    
+  }catch(e){ 
+    console.warn('chroma fail',e); 
+    // Fallback simple: dessine vidéo centrée
+    var vw=W*singerSize/100, vh=H*(singerSize+12)/100;
+    var dx=(W-vw)/2, dy=(H-vh)/2+10 + yOffset*10;
+    ctx.drawImage(video,dx,dy,vw,vh);
+  }
+}
+
+function drawPro(){
+  // Si WebGL a échoué et fallback chroma activé
+  if(webglFailed || fallbackChroma){
+    drawChromaKeyWhite();
+    // lower third etc
+    if(document.getElementById('chkLt').checked){
+      var ltH=62; ctx.fillStyle='rgba(0,0,0,.78)'; ctx.fillRect(12,canvas.height-ltH-12,360,ltH);
+      ctx.fillStyle='#e0c06a'; ctx.fillRect(12,canvas.height-ltH-12,4,ltH);
+      ctx.fillStyle='white'; ctx.font='700 14px system-ui'; ctx.fillText((document.getElementById('inName').value||'Artiste').substring(0,32),56,canvas.height-36);
+      ctx.fillStyle='#ddd'; ctx.font='600 11px system-ui'; ctx.fillText((document.getElementById('inSong').value||'Titre').substring(0,40),56,canvas.height-18);
+    }
+    if(isLive){ ctx.fillStyle='#ff2a2a'; ctx.beginPath(); ctx.arc(24,24,7,0,Math.PI*2); ctx.fill(); ctx.fillStyle='white'; ctx.font='800 12px system-ui'; ctx.fillText('LIVE MULTI • FALLBACK CHROMA',38,28); }
+    ctx.fillStyle='rgba(255,107,53,.9)'; ctx.font='700 10px system-ui'; ctx.fillText('⚠️ MODE FALLBACK SANS WebGL - Chroma Key Blanc', canvas.width-260, 24);
+    return;
+  }
+
+  var W=canvas.width, H=canvas.height;
+  var bg=bgImgs[curDecor];
+  var noBg=document.body.dataset.nodecor==='1';
+  var blurBg=document.body.dataset.blur==='1';
+
+  ctx.save();
+  if(mirrored){ ctx.translate(W,0); ctx.scale(-1,1); }
+  ctx.clearRect(0,0,W,H);
+
+  if(noBg){
+    if(video.readyState>=2) ctx.drawImage(video,0,0,W,H);
+    else { ctx.fillStyle='#111'; ctx.fillRect(0,0,W,H); }
+  } else if(useAi && lastMask && video.readyState>=2 && bg && bg.complete){
+    // 1. Background
+    ctx.drawImage(bg,0,0,W,H);
+    if(blurBg){ ctx.fillStyle='rgba(10,15,26,.25)'; ctx.fillRect(0,0,W,H); }
+
+    // 2. Create person canvas with advanced processing
+    var personCanvas=document.createElement('canvas'); personCanvas.width=W; personCanvas.height=H;
+    var pctx=personCanvas.getContext('2d');
+
+    if(enhanced){
+      // === MODE AMELIORE - Gère débardeur blanc sur mur blanc ===
+      // Étape 1: Dessine mask avec contraste auto pour blanc sur blanc
+      var maskTemp=document.createElement('canvas'); maskTemp.width=W; maskTemp.height=H;
+      var mctx=maskTemp.getContext('2d');
+      mctx.drawImage(lastMask,0,0,W,H);
+      
+      // Si auto contraste activé, augmente contraste du mask pour mieux séparer blanc sur blanc
+      if(autoContrastOn){
+        // On booste le contraste: rend le blanc plus blanc et le gris plus noir
+        mctx.globalCompositeOperation='source-over';
+        // On récupère imageData pour traitement
+        try{
+          var imgData=mctx.getImageData(0,0,W,H);
+          var data=imgData.data;
+          var th=threshold*255;
+          var cleanTh=(cleanBg/100)*80; // seuil nettoyage
+          for(var i=0;i<data.length;i+=4){
+            var v=data[i]; // R = G = B pour mask grayscale
+            // Si mode cheveux, on préserve plus de détails en haut de l'image (tête)
+            var y=Math.floor((i/4)/W);
+            var isHairZone=y < H*0.35; // 35% haut = cheveux
+            var hairPreserve=isHairZone ? (hairDetail/100)*30 : 0;
+            
+            if(v < th - cleanTh){
+              // Fond sûr -> noir
+              data[i]=data[i+1]=data[i+2]=0;
+            } else if(v > th + 40 + hairPreserve){
+              // Personnage sûr -> blanc
+              data[i]=data[i+1]=data[i+2]=255;
+            } else {
+              // Zone incertaine -> on garde mais booste
+              var boosted=(v - th)*2 + 128;
+              if(boosted<0) boosted=0; if(boosted>255) boosted=255;
+              data[i]=data[i+1]=data[i+2]=boosted;
+            }
+            // Alpha reste
+          }
+          mctx.putImageData(imgData,0,0);
+        }catch(e){ console.warn('mask processing fail',e); }
+      }
+
+      // Étape 2: Lissage intelligent
+      if(blurEdge>0){
+        // Pour cheveux, moins de flou pour garder détails
+        var blurForHair=Math.max(1, blurEdge - (hairDetail/100)*2);
+        pctx.filter='blur('+blurForHair+'px)';
+        pctx.drawImage(maskTemp,0,0);
+        pctx.filter='none';
+      } else {
+        pctx.drawImage(maskTemp,0,0);
+      }
+
+      // Étape 3: Source-in video
+      pctx.globalCompositeOperation='source-in';
+      pctx.drawImage(video,0,0,W,H);
+
+      // Étape 4: Light wrap doré et lumière cheveux si activés
+      if(lightWrapOn || hairLightOn){
+        pctx.globalCompositeOperation='source-over';
+        // Light wrap: on ajoute un contour doré très léger sur les bords du personnage pour l'intégrer au décor Casbah
+        if(lightWrapOn){
+          pctx.save();
+          pctx.globalCompositeOperation='source-atop';
+          pctx.globalAlpha=0.12;
+          // On dessine un contour doré en dilatant légèrement le mask
+          pctx.filter='blur(8px)';
+          pctx.fillStyle='#e0c06a';
+          pctx.globalCompositeOperation='source-over';
+          pctx.drawImage(maskTemp, -2, -2, W+4, H+4);
+          pctx.filter='none';
+          pctx.restore();
+        }
+      }
+
+    } else {
+      // Mode normal
+      pctx.drawImage(lastMask,0,0,W,H);
+      if(blurEdge>0){ pctx.filter='blur('+blurEdge+'px)'; pctx.drawImage(pctx.canvas,0,0); pctx.filter='none'; }
+      pctx.globalCompositeOperation='source-in';
+      pctx.drawImage(video,0,0,W,H);
+    }
+
+    // 5. Draw person on background with position
+    ctx.globalCompositeOperation='source-over';
+    var vw=W*singerSize/100, vh=H*(singerSize+12)/100;
+    var x=(W-vw)/2, y=(H-vh)/2+10 + yOffset*10;
+    if(layout==='split') x=W*0.52 - vw/2;
+
+    // Ombre portée pro si activée
+    if(enhanced && shadowOn){
+      ctx.save();
+      ctx.shadowColor='rgba(0,0,0,.65)'; ctx.shadowBlur=28; ctx.shadowOffsetY=16; ctx.shadowOffsetX=0;
+      ctx.drawImage(personCanvas, x, y, vw, vh, x, y, vw, vh);
+      ctx.restore();
+      // Deuxième ombre plus douce au sol
+      ctx.save();
+      ctx.globalAlpha=0.25;
+      ctx.fillStyle='rgba(0,0,0,.8)';
+      ctx.beginPath();
+      ctx.ellipse(x+vw/2, y+vh-10, vw*0.4, 18, 0, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    } else {
+      ctx.shadowColor='rgba(0,0,0,.55)'; ctx.shadowBlur=24; ctx.shadowOffsetY=12;
+      ctx.drawImage(personCanvas, x, y, vw, vh, x, y, vw, vh);
+      ctx.shadowColor='transparent';
+    }
+
+    // Lumière cheveux - ajoute un léger halo sur le haut
+    if(enhanced && hairLightOn && useAi){
+      ctx.save();
+      ctx.globalCompositeOperation='screen';
+      ctx.globalAlpha=0.08;
+      ctx.fillStyle='#ffe9a8';
+      ctx.beginPath();
+      ctx.ellipse(x+vw/2, y+vh*0.15, vw*0.22, vh*0.12, 0, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    if(layout==='tv'){ ctx.strokeStyle='rgba(224,192,106,.9)'; ctx.lineWidth=5; ctx.strokeRect(x,y,vw,vh); }
+    if(layout==='concert' || document.body.dataset.concert==='1'){
+      // Public virtuel sombre en bas
+      ctx.fillStyle='rgba(0,0,0,.55)'; ctx.fillRect(0,H*0.78,W,H*0.22);
+      // Spotlights - faisceaux lumineux depuis le haut
+      ctx.save();
+      ctx.globalAlpha=0.18;
+      // Spotlight gauche doré
+      var grad1=ctx.createRadialGradient(W*0.25, 0, 0, W*0.25, 0, W*0.6);
+      grad1.addColorStop(0,'rgba(255,230,150,0.8)');
+      grad1.addColorStop(0.3,'rgba(224,192,106,0.25)');
+      grad1.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=grad1;
+      ctx.beginPath(); ctx.moveTo(W*0.25,0); ctx.lineTo(W*0.05,H); ctx.lineTo(W*0.45,H); ctx.closePath(); ctx.fill();
+      // Spotlight droite blanc
+      var grad2=ctx.createRadialGradient(W*0.75, 0, 0, W*0.75, 0, W*0.6);
+      grad2.addColorStop(0,'rgba(255,255,255,0.7)');
+      grad2.addColorStop(0.3,'rgba(200,200,255,0.2)');
+      grad2.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=grad2;
+      ctx.beginPath(); ctx.moveTo(W*0.75,0); ctx.lineTo(W*0.55,H); ctx.lineTo(W*0.95,H); ctx.closePath(); ctx.fill();
+      ctx.restore();
+      // Fumée de scène légère
+      ctx.save();
+      ctx.globalAlpha=0.07;
+      ctx.fillStyle='#ffffff';
+      for(var i=0;i<3;i++){
+        var fx=(W*0.2 + i*W*0.3) + Math.sin(Date.now()/2000 + i)*20;
+        var fy=H*0.6 + Math.cos(Date.now()/1500 + i)*10;
+        ctx.beginPath(); ctx.ellipse(fx,fy,120,40,0,0,Math.PI*2); ctx.fill();
+      }
+      ctx.restore();
+      // Lumières clignotantes bord scène
+      ctx.save();
+      var t=Date.now()/300;
+      for(var li=0;li<W;li+=80){
+        var on=Math.sin(t + li*0.05) > 0.3;
+        ctx.fillStyle=on ? 'rgba(224,192,106,0.9)' : 'rgba(80,40,10,0.4)';
+        ctx.beginPath(); ctx.arc(li, H*0.78, 4, 0, Math.PI*2); ctx.fill();
+      }
+      ctx.restore();
+    }
+
+  } else if(bg && bg.complete){
+    ctx.drawImage(bg,0,0,W,H);
+    if(video.readyState>=2){
+      var vw=W*singerSize/100, vh=H*(singerSize+12)/100;
+      var x=(W-vw)/2, y=(H-vh)/2+10 + yOffset*10;
+      ctx.shadowColor='rgba(0,0,0,.6)'; ctx.shadowBlur=24; ctx.shadowOffsetY=10;
+      ctx.drawImage(video,x,y,vw,vh);
+      ctx.shadowColor='transparent';
+      if(layout==='tv'){ ctx.strokeStyle='rgba(224,192,106,.9)'; ctx.lineWidth=5; ctx.strokeRect(x,y,vw,vh); }
+    } else {
+      ctx.fillStyle='rgba(255,255,255,.08)'; var vw=W*singerSize/100, vh=H*(singerSize+12)/100; var x=(W-vw)/2, y=(H-vh)/2+10; ctx.fillRect(x,y,vw,vh);
+    }
+  } else {
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+    if(video.readyState>=2) ctx.drawImage(video,0,0,W,H);
+  }
+
+  ctx.restore();
+
+  if(document.getElementById('chkLt').checked){
+    var ltH=62; ctx.fillStyle='rgba(0,0,0,.78)'; ctx.fillRect(12,H-ltH-12,360,ltH);
+    ctx.fillStyle='#e0c06a'; ctx.fillRect(12,H-ltH-12,4,ltH);
+    ctx.fillStyle='white'; ctx.font='700 14px system-ui'; ctx.fillText((document.getElementById('inName').value||'Artiste').substring(0,32),56,H-36);
+    ctx.fillStyle='#ddd'; ctx.font='600 11px system-ui'; ctx.fillText((document.getElementById('inSong').value||'Titre').substring(0,40),56,H-18);
+  }
+  // TICKER JOURNAL sur canvas pour enregistrement
+  var tickerBar=document.getElementById('tickerBar');
+  if(tickerBar && tickerBar.style.display!=='none'){
+    var th=32;
+    // fond ticker
+    ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,H-th,W,H);
+    ctx.fillStyle='#1a1a1a'; ctx.fillRect(0,H-th,W,th);
+    ctx.fillStyle='#e0c06a'; ctx.fillRect(0,H-th,W,2);
+    // label CHAABI NEWS
+    ctx.fillStyle='#e0c06a'; ctx.fillRect(0,H-th,110,th);
+    ctx.fillStyle='#111'; ctx.font='800 10px system-ui'; ctx.fillText('CHAABI NEWS',8,H-th+12);
+    ctx.fillText('مباشر',8,H-th+24);
+    // texte défilant (on simule défilement avec Date.now)
+    var txt=document.getElementById('tickerText').textContent;
+    var offset=(Date.now()/30) % (W+ctx.measureText(txt).width);
+    ctx.fillStyle='white'; ctx.font='700 13px system-ui';
+    ctx.fillText(txt, W - offset, H-th+20);
+    // horloge
+    ctx.fillStyle='#111'; ctx.fillRect(W-70,H-th,70,th);
+    ctx.fillStyle='#e0c06a'; ctx.font='700 11px system-ui';
+    var now=new Date(); var alg=new Date(now.toLocaleString('en-US',{timeZone:'Africa/Algiers'}));
+    var timeStr=String(alg.getHours()).padStart(2,'0')+':'+String(alg.getMinutes()).padStart(2,'0');
+    ctx.fillText(timeStr, W-50, H-th+20);
+  }
+  // BREAKING NEWS sur canvas
+  var breakingBar=document.getElementById('breakingBar');
+  if(breakingBar && breakingBar.style.display!=='none'){
+    ctx.fillStyle='#c00'; ctx.fillRect(12,52,280,24);
+    ctx.fillStyle='white'; ctx.font='800 11px system-ui'; ctx.fillText(breakingBar.textContent.substring(0,40),18,67);
+  }
+  // Horloge Alger sur canvas
+  var clockBadge=document.getElementById('badgeClock');
+  if(clockBadge && clockBadge.style.display!=='none'){
+    ctx.fillStyle='rgba(0,0,0,.7)'; ctx.fillRect(W-160,12,148,26);
+    ctx.fillStyle='white'; ctx.font='700 11px system-ui'; ctx.fillText(clockBadge.textContent, W-150, 28);
+  }
+  if(isLive){ ctx.fillStyle='#ff2a2a'; ctx.beginPath(); ctx.arc(24,24,7,0,Math.PI*2); ctx.fill(); ctx.fillStyle='white'; ctx.font='800 12px system-ui'; ctx.fillText(enhanced?'LIVE MULTI • IA PRO AMELIORE':'LIVE MULTI • IA PRO',38,28); }
+  if(enhanced){ ctx.fillStyle='rgba(224,192,106,.9)'; ctx.font='700 10px system-ui'; ctx.fillText('✨ DETOURAGE AMELIORE ACTIF', W-200, 24); }
+}
+
+var raf=null;
+function loop(){
+  if(introActive){
+    drawIntro();
+  } else {
+    if(useAi && selfieSeg && video.readyState>=2 && !webglFailed){
+      try{ 
+        selfieSeg.send({image:video}); 
+      }catch(e){
+        console.error('WebGL send error',e);
+        if(e.message && e.message.includes('WebGL')){
+          webglFailed=true;
+          useAi=false;
+          fallbackChroma=true;
+          document.getElementById('aiStatus').textContent='WebGL Erreur - Mode Fallback Chroma';
+          document.getElementById('aiStatus').style.background='#ff6b35';
+          document.getElementById('badgeAi').textContent='⚠️ Fallback Chroma Blanc';
+          toast('⚠️ Erreur WebGL: '+e.message+'. Passage automatique en mode Chroma Key Blanc (sans IA) - Ton mur blanc sera quand même supprimé ! Active accélération matérielle dans Chrome pour IA complète.');
+        }
+      }
+    }
+    drawPro();
+  }
+  raf=requestAnimationFrame(loop);
+}
+
+function startCam(){
+  var btn=document.getElementById('btnCam'); btn.textContent='Démarrage...';
+  navigator.mediaDevices.getUserMedia({video:{width:{ideal:1280},height:{ideal:720}}, audio:{echoCancellation:true,noiseSuppression:true}})
+  .then(function(s){
+    stream=s; video.srcObject=s; video.play();
+    document.getElementById('camState').textContent='ON ● IA'; document.getElementById('camState').style.background='var(--green)'; document.getElementById('camState').style.color='white';
+    btn.textContent='Caméra ON ✔️ IA Active'; toast('Caméra + IA détourage active - Ton mur blanc va disparaître, seul toi resteras sur le décor');
+    initAi();
+  })
+  .catch(function(e){ btn.textContent='🎥 Activer caméra + IA'; toast('Erreur caméra: '+e.message); });
+}
+
+function init(){
+  loadDecors(); loop(); initAi();
+  document.getElementById('btnCam').onclick=startCam;
+  document.getElementById('btnMirror').onclick=function(){ mirrored=!mirrored; toast(mirrored?'Miroir ON':'Miroir OFF'); };
+  document.getElementById('btnCaptureBg').onclick=captureBackground;
+  document.getElementById('btnToggleAi').onclick=function(){ 
+    if(webglFailed){
+      toast('WebGL en erreur - Utilise mode Fallback Chroma Blanc à la place');
+      document.getElementById('btnFallback').style.display='block';
+      return;
+    }
+    useAi=!useAi; this.textContent=useAi?'🤖 IA ON':'🤖 IA OFF'; document.getElementById('badgeAi').textContent=useAi?'🤖 IA ON • Personnage seul':'🤖 IA OFF'; toast(useAi?'Détourage IA activé':'Détourage désactivé'); 
+  };
+  document.getElementById('btnFallback').onclick=function(){
+    fallbackChroma=true; webglFailed=true; useAi=false;
+    document.getElementById('badgeAi').textContent='✅ Fallback Chroma Blanc ON';
+    document.getElementById('aiStatus').textContent='Fallback Chroma Actif ✅';
+    document.getElementById('aiStatus').style.background='#25d366';
+    this.style.display='none';
+    toast('✅ Mode Fallback Chroma Blanc activé - Ton mur blanc sera supprimé sans WebGL ! Porte un t-shirt coloré pour meilleur résultat.');
+  };
+  document.getElementById('btnFixWebGL').onclick=function(){
+    var msg='Pour activer WebGL / Accélération matérielle:\n\n1. Chrome: chrome://settings -> Système -> Active \"Utiliser l\'accélération matérielle\"\n2. Redémarre Chrome\n3. Va sur chrome://gpu -> Vérifie WebGL = Hardware accelerated\n4. Si tu es sur file://, lance Chrome avec --allow-file-access-from-files\n5. Alternative: héberge le fichier sur un serveur local (Live Server VS Code) ou Netlify\n\nEn attendant, utilise le mode Fallback Chroma Blanc (bouton orange) qui marche sans WebGL !';
+    alert(msg);
+    toast('Instructions WebGL affichées - Utilise Fallback en attendant');
+    document.getElementById('btnFallback').style.display='block';
+  };
+  document.getElementById('btnImprove').onclick=function(){
+    enhanced=!enhanced;
+    var panel=document.getElementById('improvePanel');
+    if(enhanced){
+      panel.style.display='grid';
+      this.textContent='✨ Mode Amélioré ON - Cliquez pour désactiver';
+      this.style.background='linear-gradient(100deg,#25d366,#0e7a5a)';
+      this.style.color='white';
+      toast('✨ Mode Amélioré activé : gère débardeur blanc sur mur blanc + cheveux gris + ombre + contour doré');
+      // Réglages optimaux pour ton cas (capture d'écran)
+      document.getElementById('threshold').value=45;
+      document.getElementById('blurEdge').value=2;
+      document.getElementById('hairDetail').value=80;
+      document.getElementById('cleanBg').value=65;
+      threshold=0.45; blurEdge=2; hairDetail=80; cleanBg=65;
+    } else {
+      panel.style.display='none';
+      this.textContent='✨ Améliorer détourage - Mode PRO';
+      this.style.background='linear-gradient(100deg,#e0c06a,#8a6d2e)';
+      this.style.color='#111';
+      toast('Mode amélioré désactivé');
+    }
+  };
+  document.getElementById('hairDetail').oninput=function(e){ hairDetail=parseInt(e.target.value); };
+  document.getElementById('cleanBg').oninput=function(e){ cleanBg=parseInt(e.target.value); };
+  document.getElementById('chkShadow').onchange=function(e){ shadowOn=e.target.checked; };
+  document.getElementById('chkLightWrap').onchange=function(e){ lightWrapOn=e.target.checked; };
+  document.getElementById('chkHairLight').onchange=function(e){ hairLightOn=e.target.checked; };
+  document.getElementById('chkAutoContrast').onchange=function(e){ autoContrastOn=e.target.checked; };
+  document.getElementById('threshold').oninput=function(e){ threshold=parseInt(e.target.value)/100; };
+  document.getElementById('blurEdge').oninput=function(e){ blurEdge=parseInt(e.target.value); };
+  document.getElementById('sizeRange').oninput=function(e){ singerSize=parseInt(e.target.value); };
+  document.getElementById('yPos').oninput=function(e){ yOffset=parseInt(e.target.value); };
+  document.getElementById('btnNoBg').onclick=function(){ document.body.dataset.nodecor='1'; toast('Fond réel'); };
+  document.getElementById('btnBlurBg').onclick=function(){ document.body.dataset.nodecor='0'; document.body.dataset.blur='1'; toast('Flou pro'); };
+  document.getElementById('btnAddDecor').onclick=function(){ document.getElementById('fileIn').click(); };
+  document.getElementById('fileIn').onchange=function(e){
+    var f=e.target.files[0]; if(!f) return; var url=URL.createObjectURL(f);
+    var img=new Image(); img.src=url; bgImgs.push(img); decors.push({name:f.name,file:url});
+    var grid=document.getElementById('decorGrid'); var idx=bgImgs.length-1;
+    var el=document.createElement('div'); el.className='decor on'; el.innerHTML='<img src="'+url+'"><span>'+f.name+'</span>';
+    el.onclick=function(){ curDecor=idx; document.querySelectorAll('.decor').forEach(function(x,i){ x.classList.toggle('on',i===idx); }); };
+    document.querySelectorAll('.decor').forEach(function(x){ x.classList.remove('on'); }); grid.appendChild(el); curDecor=idx;
+  };
+  document.querySelectorAll('.layout').forEach(function(b){ b.onclick=function(){ document.querySelectorAll('.layout').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on'); layout=b.dataset.l; toast('Mise en scène: '+layout); }; });
+
+  // ===== PRESETS 1 CLIC =====
+  function applyPreset(name){
+    var concertDecorsIdx={casbah:0, studio:1, andalou:2, opera:3, gold:4};
+    if(name==='casbah'){
+      curDecor=0; layout='full'; singerSize=62; yOffset=0; threshold=0.35; blurEdge=3;
+      document.getElementById('inName').value='Algeria Tech by Basta - Dar El Casbah';
+      document.getElementById('inSong').value='Chaabi Intime - Live Casbah';
+      document.getElementById('tickerBar').style.display='none';
+      document.getElementById('journalPanel').style.display='none';
+      document.getElementById('breakingBar').style.display='none';
+      document.getElementById('badgeClock').style.display='none';
+      toast('Preset Casbah Intime 🏛️');
+    } else if(name==='studio'){
+      curDecor=1; layout='tv'; singerSize=64; yOffset=0; threshold=0.4; blurEdge=2;
+      document.getElementById('inName').value='Algeria Tech by Basta - Studio TV';
+      document.getElementById('inSong').value='Journal Chaabi - Direct';
+      document.getElementById('tickerBar').style.display='none';
+      document.getElementById('journalPanel').style.display='none';
+      toast('Preset Studio TV 📺');
+    } else if(name==='journal'){
+      curDecor=1; layout='tv'; singerSize=58; yOffset=-8; threshold=0.45; blurEdge=2;
+      enhanced=true; shadowOn=true; lightWrapOn=true;
+      document.getElementById('improvePanel').style.display='grid';
+      document.getElementById('btnImprove').textContent='✨ Mode Amélioré ON - Journal';
+      document.getElementById('btnImprove').style.background='linear-gradient(100deg,#25d366,#0e7a5a)';
+      document.getElementById('btnImprove').style.color='white';
+      document.getElementById('inName').value='Algeria Tech by Basta - JOURNAL CHAABI TV';
+      document.getElementById('inSong').value='📰 Édition Spéciale - Direct Alger';
+      document.getElementById('tickerBar').style.display='flex';
+      document.getElementById('journalPanel').style.display='block';
+      document.getElementById('badgeClock').style.display='inline-flex';
+      document.getElementById('breakingBar').style.display='none';
+      // Horloge Alger temps réel
+      startClock();
+      toast('📰 PRESET JOURNAL CHAABI TV ACTIVÉ : bandeau actu défilant + horloge Alger + breaking news prêt');
+    } else if(name==='breaking'){
+      curDecor=1; layout='tv'; singerSize=60; yOffset=-8;
+      document.getElementById('tickerBar').style.display='flex';
+      document.getElementById('journalPanel').style.display='block';
+      document.getElementById('breakingBar').style.display='block';
+      document.getElementById('badgeClock').style.display='inline-flex';
+      document.getElementById('chkBreaking').checked=true;
+      startClock();
+      toast('🔴 BREAKING NEWS activé - Bandeau rouge clignotant');
+    } else if(name==='concert'){
+      curDecor=3; layout='concert'; singerSize=76; yOffset=-4; threshold=0.45; blurEdge=2;
+      enhanced=true; shadowOn=true; lightWrapOn=true; hairLightOn=true; autoContrastOn=true;
+      document.getElementById('improvePanel').style.display='grid';
+      document.getElementById('btnImprove').textContent='✨ Mode Amélioré ON - Concert';
+      document.getElementById('btnImprove').style.background='linear-gradient(100deg,#25d366,#0e7a5a)';
+      document.getElementById('btnImprove').style.color='white';
+      document.getElementById('inName').value='Algeria Tech by Basta - CONCERT LIVE';
+      document.getElementById('inSong').value='🎤 LIVE Opéra d\'Alger - Chaabi Symphonique';
+      document.getElementById('hairDetail').value=85; document.getElementById('cleanBg').value=70;
+      hairDetail=85; cleanBg=70;
+      document.getElementById('threshold').value=45; document.getElementById('blurEdge').value=2;
+      document.getElementById('sizeRange').value=76; document.getElementById('yPos').value=-4;
+      document.getElementById('tickerBar').style.display='none';
+      document.getElementById('journalPanel').style.display='none';
+      document.getElementById('breakingBar').style.display='none';
+      document.getElementById('badgeClock').style.display='none';
+      document.body.dataset.concert='1';
+      toast('🎤 PRESET CONCERT OPÉRA ACTIVÉ : scène, projecteurs, fumée, public, son live - Tu es sur scène !');
+    } else if(name==='gold'){
+      curDecor=4; layout='full'; singerSize=68; yOffset=0; threshold=0.35; blurEdge=4;
+      document.getElementById('inName').value='Algeria Tech by Basta';
+      document.getElementById('inSong').value='Chaabi Gold - Prestige';
+      document.getElementById('tickerBar').style.display='none';
+      document.getElementById('journalPanel').style.display='none';
+      toast('Preset Gold Luxe ✨');
+    } else if(name==='interview'){
+      curDecor=1; layout='split'; singerSize=55; yOffset=0;
+      document.getElementById('inName').value='Algeria Tech by Basta + Invité';
+      document.getElementById('inSong').value='Interview Mémoire du Chaabi';
+      document.getElementById('tickerBar').style.display='none';
+      document.getElementById('journalPanel').style.display='none';
+      toast('Preset Interview Duo 👥');
+    } else if(name==='mariage'){
+      curDecor=2; layout='concert'; singerSize=70; yOffset=0;
+      document.getElementById('inName').value='Algeria Tech by Basta - Orchestre Mariage';
+      document.getElementById('inSong').value='💒 Spécial Fête - Live';
+      document.getElementById('tickerBar').style.display='none';
+      document.getElementById('journalPanel').style.display='none';
+      toast('Preset Mariage / Fête 💒');
+    }
+    // Update UI
+    document.querySelectorAll('.decor').forEach(function(x,i){ x.classList.toggle('on',i===curDecor); });
+    document.querySelectorAll('.layout').forEach(function(x){ x.classList.toggle('on',x.dataset.l===layout); });
+    document.getElementById('ltName').textContent=document.getElementById('inName').value;
+    document.getElementById('ltSong').textContent='🎤 '+document.getElementById('inSong').value;
+    if(name!=='concert'){ document.body.dataset.concert='0'; }
+  }
+  document.getElementById('presetCasbah').onclick=function(){ applyPreset('casbah'); };
+  document.getElementById('presetStudio').onclick=function(){ applyPreset('studio'); };
+  document.getElementById('presetConcert').onclick=function(){ applyPreset('concert'); };
+  document.getElementById('presetJournal').onclick=function(){ applyPreset('journal'); };
+  document.getElementById('presetBreaking').onclick=function(){ applyPreset('breaking'); };
+  document.getElementById('presetGold').onclick=function(){ applyPreset('gold'); };
+  document.getElementById('presetInterview').onclick=function(){ applyPreset('interview'); };
+  document.getElementById('presetMariage').onclick=function(){ applyPreset('mariage'); };
+
+  // ===== JOURNAL TICKER LOGIC =====
+  var clockInt=null;
+  function startClock(){
+    if(clockInt) clearInterval(clockInt);
+    function upd(){
+      var now=new Date();
+      var algTime=new Date(now.toLocaleString('en-US',{timeZone:'Africa/Algiers'}));
+      var hh=String(algTime.getHours()).padStart(2,'0');
+      var mm=String(algTime.getMinutes()).padStart(2,'0');
+      var ss=String(algTime.getSeconds()).padStart(2,'0');
+      document.getElementById('badgeClock').textContent='🕐 '+hh+':'+mm+' • ALGER';
+      var tEl=document.getElementById('tickerTime');
+      if(tEl) tEl.textContent=hh+':'+mm+':'+ss;
+    }
+    upd(); clockInt=setInterval(upd,1000);
+  }
+  document.getElementById('btnUpdateTicker').onclick=function(){
+    var txt=document.getElementById('tickerInput').value;
+    document.getElementById('tickerText').textContent=txt + ' • ' + txt;
+    toast('Bandeau actu mis à jour ✅');
+  };
+  document.getElementById('btnToggleTicker').onclick=function(){
+    var bar=document.getElementById('tickerBar');
+    bar.style.display=bar.style.display==='none'?'flex':'none';
+    toast(bar.style.display==='none'?'Bandeau masqué':'Bandeau affiché');
+  };
+  document.getElementById('chkBreaking').onchange=function(e){
+    document.getElementById('breakingBar').style.display=e.target.checked?'block':'none';
+  };
+  document.getElementById('chkClock').onchange=function(e){
+    document.getElementById('badgeClock').style.display=e.target.checked?'inline-flex':'none';
+    if(e.target.checked) startClock();
+  };
+  document.getElementById('btnBreaking').onclick=function(){
+    var txt=document.getElementById('breakingInput').value;
+    document.getElementById('breakingBar').textContent=txt;
+    document.getElementById('breakingBar').style.display='block';
+    document.getElementById('chkBreaking').checked=true;
+    toast('Breaking News mis à jour 🔴');
+  };
+  document.getElementById('tickerSpeed').oninput=function(e){
+    var v=parseInt(e.target.value);
+    document.getElementById('tickerText').style.animationDuration=(70-v)+'s';
+  };
+
+  document.getElementById('inName').oninput=function(e){ document.getElementById('ltName').textContent=e.target.value; };
+  document.getElementById('inSong').oninput=function(e){ document.getElementById('ltSong').textContent='🎤 '+e.target.value; };
+  document.getElementById('chkLt').onchange=function(e){ document.getElementById('ltBox').style.display=e.target.checked?'flex':'none'; };
+  document.getElementById('btnEditTele').onclick=function(){ var t=prompt('Paroles:',document.getElementById('tele').innerText); if(t!==null) document.getElementById('tele').innerText=t; };
+  document.getElementById('btnTelePlay').onclick=function(){ var tp=document.getElementById('tele'); if(teleInt){ clearInterval(teleInt); teleInt=null; this.textContent='▶ Auto-scroll'; return; } this.textContent='⏸ Pause'; teleInt=setInterval(function(){ tp.scrollTop+=teleSpeed; if(tp.scrollTop+tp.clientHeight>=tp.scrollHeight) tp.scrollTop=0; },50); };
+  document.getElementById('btnTeleSpeed').onclick=function(){ teleSpeed=teleSpeed>=3?1:teleSpeed+0.5; toast('Vitesse x'+teleSpeed); };
+  document.getElementById('btnChatSend').onclick=function(){ var inp=document.getElementById('chatIn'); if(!inp.value.trim()) return; var box=document.getElementById('chatBox'); var d=document.createElement('div'); d.textContent='MOI: '+inp.value; box.appendChild(d); box.scrollTop=box.scrollHeight; inp.value=''; };
+  document.getElementById('btnGenerique').onclick=function(){ startGenerique('journal'); };
+  document.getElementById('btnJingleOnly').onclick=function(){ playJingle('journal'); };
+  document.getElementById('btnCountdown').onclick=function(){
+    var c=5;
+    toast('⏱ Compte à rebours 5s - Prépare-toi !');
+    var int=setInterval(function(){
+      toast('⏱ '+c+'...');
+      playJingle('simple');
+      c--;
+      if(c<0){ clearInterval(int); toast('🔴 DIRECT !'); startGenerique('journal'); }
+    },1000);
+  };
+  document.getElementById('btnTest').onclick=function(){ toast('✅ RTMP OK • @algeria-tech-by-basta connecté • IA active'); };
+  document.getElementById('btnObs').onclick=function(){ var txt='RTMP: rtmp://live.restream.io/live\nClé: re_12395877_eventf8bbf6b5a77a4855a3d833bfa5322033\nYT: @algeria-tech-by-basta\nURL: '+location.href; navigator.clipboard.writeText(txt).then(function(){ toast('Config OBS copiée'); }); };
+  document.getElementById('btnLoop').onclick=function(){ toast('Mode boucle 24/7: Restream Live Loop'); };
+  document.getElementById('btnJingle').onclick=function(){ playJingle('concert'); };
+  document.getElementById('btnSave').onclick=function(){ localStorage.setItem('chaabi-studio-pro', JSON.stringify({name:document.getElementById('inName').value, song:document.getElementById('inSong').value, decor:curDecor})); toast('Sauvé 💾'); };
+  document.getElementById('btnRec').onclick=toggleRec;
+  document.getElementById('btnDownload').onclick=downloadRec;
+  document.getElementById('btnLive').onclick=toggleLive;
+  document.getElementById('btnLive2').onclick=toggleLive;
+  toast('✅ Studio PRO chargé - Détourage IA activé - Seul le personnage sera gardé sur le décor');
+}
+
+function toggleRec(){
+  var btn=document.getElementById('btnRec');
+  if(!isRec){
+    try{
+      var cStream=canvas.captureStream(30); if(stream) stream.getAudioTracks().forEach(function(t){ cStream.addTrack(t); });
+      recChunks=[]; mediaRecorder=new MediaRecorder(cStream,{mimeType:'video/webm'});
+      mediaRecorder.ondataavailable=function(e){ if(e.data.size>0) recChunks.push(e.data); };
+      mediaRecorder.start(); isRec=true; recStart=Date.now(); btn.textContent='■ Stop Rec'; btn.style.background='var(--red)'; btn.style.color='white';
+      document.getElementById('badgeRec').style.display='inline-flex';
+      (function upd(){ if(!isRec) return; var s=Math.floor((Date.now()-recStart)/1000); var mm=String(Math.floor(s/60)).padStart(2,'0'); var ss=String(s%60).padStart(2,'0'); document.getElementById('badgeRec').textContent='● REC '+mm+':'+ss; setTimeout(upd,1000); })();
+    }catch(e){ toast('Rec error: '+e.message); }
+  } else {
+    try{ mediaRecorder.stop(); }catch(e){} isRec=false; btn.textContent='● Rec'; btn.style.background=''; btn.style.color=''; document.getElementById('badgeRec').style.display='none';
+  }
+}
+function downloadRec(){ if(recChunks.length===0){ toast('Aucun enregistrement'); return; } var blob=new Blob(recChunks,{type:'video/webm'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download='chaabi-pro-'+new Date().toISOString().slice(0,10)+'.webm'; a.click(); }
+function toggleLive(){
+  var key=document.getElementById('rtmpRestream').value.trim(); if(!key){ toast('Clé Restream manquante'); return; }
+  isLive=!isLive;
+  var b1=document.getElementById('btnLive'), b2=document.getElementById('btnLive2');
+  if(isLive){ b1.textContent='■ STOP LIVE'; b1.classList.remove('off'); b2.textContent='■ STOP LIVE'; document.getElementById('badgeLive').style.display='inline-flex'; toast('🔴 LIVE MULTI PRO - Détourage IA actif sur @algeria-tech-by-basta'); if(!isRec) toggleRec(); }
+  else { b1.textContent='● GO LIVE MULTI'; b1.classList.add('off'); b2.textContent='🔴 LANCER DIRECT MULTI - Détourage pro'; document.getElementById('badgeLive').style.display='none'; toast('Live arrêté'); }
+}
+
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3cbda2e7b90e8a1',t:'MTc4OTY4NzMzOQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

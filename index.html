@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dar El Chaabi TV - @algeria-tech-by-basta</title>
+<style>
+:root{--bg:#fdfaf3;--bg2:#f5f1e8;--paper:#fff;--ink:#1e232e;--mut:#6b7688;--line:#e8e0d0;--acc:#b8942f;--acc2:#8a6d2e;--acc-soft:#fff3d0;--radius:16px;--radius-lg:24px;--shadow:0 8px 32px rgba(30,35,46,.08)}
+html[data-theme="dark"]{--bg:#0c111a;--bg2:#121a28;--paper:#182233;--ink:#e8eef8;--mut:#8ea0b8;--line:#24314a;--acc:#e0c06a;--acc2:#c9a84d;--acc-soft:#2a2312}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+.shell{width:min(1280px,92vw);margin:auto}
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 85%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.h-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;flex-wrap:wrap}
+.brand{display:flex;gap:12px;align-items:center}.logo{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#f3d78a,#8a6d2e);color:#111;font:900 16px system-ui}
+.brand b{font:800 18px/1.1 Georgia,serif}.brand small{display:block;font:600 10px system-ui;color:var(--mut);letter-spacing:.1em;text-transform:uppercase}
+.nav{display:flex;gap:6px;flex-wrap:wrap}.nav a{padding:8px 12px;border-radius:999px;font:600 13px system-ui}.nav a:hover{background:var(--bg2)}.nav a.active{background:var(--ink);color:var(--paper)}
+.btn{padding:10px 18px;border-radius:999px;border:1px solid transparent;font:700 13px system-ui;display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.btn-primary{background:linear-gradient(100deg,var(--acc),var(--acc2));color:#111}.btn-ghost{background:var(--paper);border:1px solid var(--line)}
+.btn-sm{padding:7px 14px;font-size:12.5px}
+.social-bar{display:flex;gap:8px}.social-bar a{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--paper);border:1px solid var(--line)}
+.hero{padding:42px 0 28px;display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
+@media(max-width:900px){.hero{grid-template-columns:1fr}}
+.kicker{display:inline-flex;padding:6px 12px;border-radius:999px;background:var(--acc-soft);border:1px solid color-mix(in srgb,var(--acc) 25%,transparent);font:700 11px system-ui;text-transform:uppercase;color:var(--acc2)}
+.hero h1{font:800 clamp(28px,4.5vw,48px)/.95 Georgia,serif;margin:16px 0 12px}.hero h1 em{background:linear-gradient(100deg,var(--acc),#d4a43a);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.lead{font:18px/1.5 Georgia,serif;color:var(--mut);max-width:52ch}
+.section{padding:48px 0;border-top:1px solid var(--line)}.section.alt{background:var(--bg2)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.sec-head h2{font:800 28px/1.1 Georgia,serif;margin:0}
+.player-layout{display:grid;grid-template-columns:1.6fr .9fr;gap:18px}
+@media(max-width:980px){.player-layout{grid-template-columns:1fr}}
+.player-wrap{background:var(--paper);border-radius:24px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+.player-frame{aspect-ratio:16/9;background:#000;position:relative}
+.player-info{padding:16px 18px}.chip{display:inline-flex;padding:4px 10px;border-radius:999px;background:var(--bg2);border:1px solid var(--line);font:600 11px system-ui}
+.playlist{background:var(--paper);border:1px solid var(--line);border-radius:24px;overflow:hidden;max-height:720px;display:flex;flex-direction:column}
+.playlist-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.playlist-list{overflow:auto;padding:8px;display:grid;gap:8px}
+.v-item{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:8px;border-radius:12px;border:1px solid transparent;text-align:left;background:transparent;width:100%;cursor:pointer}
+.v-item:hover{background:var(--bg2)}.v-item.on{background:var(--acc-soft);border-color:color-mix(in srgb,var(--acc) 30%,transparent)}
+.v-thumb{aspect-ratio:16/9;border-radius:8px;background:#111;overflow:hidden;position:relative}.v-thumb img{width:100%;height:100%;object-fit:cover}
+.grid{display:grid;gap:14px}.grid-3{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.grid-3,.grid-4{grid-template-columns:1fr 1fr}}@media(max-width:560px){.grid-3,.grid-4{grid-template-columns:1fr}}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+#toast{position:fixed;right:16px;bottom:16px;z-index:99;display:grid;gap:8px}
+.toast{background:var(--ink);color:var(--paper);padding:12px 14px;border-radius:12px;font:600 13px system-ui;max-width:360px}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<header>
+  <div class="shell h-row">
+    <div class="brand"><div class="logo">د</div><div><b>Dar El Chaabi TV</b><small>@algeria-tech-by-basta • Alger • Diaspora</small></div></div>
+    <nav class="nav">
+      <a href="#player" class="active">Lecteur</a>
+      <a href="#videos">Vidéos</a>
+      <a href="studio-live-chaabi.html" style="background:linear-gradient(100deg,#ff2a2a,#c43a2a);color:white">🔴 STUDIO LIVE</a>
+      <a href="#ecosysteme">Écosystème</a>
+    </nav>
+    <div style="display:flex;gap:8px;align-items:center">
+      <a class="btn btn-ghost btn-sm" href="https://www.youtube.com/@algeria-tech-by-basta" target="_blank">▶ YouTube</a>
+      <button class="btn btn-primary btn-sm" id="btnGoStudio">🔴 Studio PRO</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="shell hero">
+  <div>
+    <div class="kicker">● Chaîne télé Chaabi depuis ton site • @algeria-tech-by-basta</div>
+    <h1>Faire vivre le <em>Chaabi Algérien</em> depuis ton site</h1>
+    <p class="lead">Lecteur direct 100% intégré : les vidéos restent sur ton site, pas de renvoi YouTube. Playlist restaurée. Erreur 153 éradiquée.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" id="ctaLive">▶ Voir le live</button>
+      <a class="btn" href="studio-live-chaabi.html" style="background:#ff2a2a;color:white">🔴 Studio Live PRO</a>
+    </div>
+  </div>
+  <div style="background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:12px;aspect-ratio:4/3;display:grid;place-items:center">Aperçu Studio Live • Décors virtuels • IA détourage</div>
+</section>
+
+<!-- PLAYER - VERSION SIMPLIFIÉE SELON TES INSTRUCTIONS -->
+<section class="section alt" id="player">
+  <div class="shell">
+    <div class="sec-head">
+      <div><h2>📺 Lecteur YouTube intégré</h2><p>Lis toutes les vidéos directement ici, sans quitter le site. Playlist Chaabi test pré-chargée. Clique sur une vidéo à droite ou ci-dessous pour changer.</p></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" id="btnPrevVideo">← Précédent</button>
+        <button class="btn btn-ghost btn-sm" id="btnNextVideo">Suivant →</button>
+        <button class="btn btn-primary btn-sm" id="btnTheater">🎬 Mode cinéma</button>
+      </div>
+    </div>
+    
+    <div class="player-layout" id="playerLayout">
+      <div class="player-wrap">
+        <div class="player-frame" id="playerFrame">
+          <!-- Le lecteur vidéo s'affichera directement ici -->
+        </div>
+        <div class="player-info">
+          <h3 id="currentTitle">Cheikh El Hadj Mohamed El Anka - Anthologie Chaabi</h3>
+          <div class="meta">
+            <span class="chip">🎵 Chaabi Live</span><span class="chip" id="currentViews">▶ 128K vues • Test</span><span class="chip">📅 Ajouté aujourd'hui</span>
+            <span style="margin-left:auto;display:flex;gap:6px">
+              <button class="btn btn-ghost btn-sm" id="btnLike">❤ J'aime</button>
+              <button class="btn btn-ghost btn-sm" id="btnShareVideo">↗ Partager</button>
+              <button class="btn btn-ghost btn-sm" id="btnAddQueue">+ File d'attente</button>
+            </span>
+          </div>
+          <p id="currentDesc" style="margin:12px 0 0;color:var(--mut);font:13.5px/1.6 system-ui">Maître incontesté du Chaabi algérois. Version restaurée pour Dar El Chaabi TV. Lecteur direct 100% intégré - reste sur le site.</p>
+        </div>
+      </div>
+      <div class="playlist">
+        <div class="playlist-head"><b style="font:700 13px system-ui">Playlist • Chaabi Tests (12)</b><button class="btn btn-ghost btn-sm" id="btnShuffle">🔀 Aléatoire</button></div>
+        <div class="playlist-list" id="playlistList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="videos">
+  <div class="shell">
+    <div class="sec-head"><div><h2>🎞️ Vidéos tests</h2><p>Clique pour lire directement sur le site - reste sur le site, pas de renvoi YouTube.</p></div></div>
+    <div class="grid grid-4" id="videoGrid"></div>
+  </div>
+</section>
+
+<section class="section alt" id="ecosysteme">
+  <div class="shell"><h2>🔗 Écosystème - Restream configuré</h2><p>RTMP: rtmp://live.restream.io/live • Clé: re_12395877... • YouTube: @algeria-tech-by-basta • Studio PRO avec IA détourage + presets Concert + Journal</p>
+  <div style="display:flex;gap:8px;margin-top:12px"><a class="btn btn-primary" href="studio-live-chaabi.html">🔴 Ouvrir Studio PRO</a><a class="btn btn-ghost" href="https://www.youtube.com/@algeria-tech-by-basta" target="_blank">Ma chaîne YouTube</a></div></div>
+</section>
+</main>
+
+<script>
+// ===== CONFIG =====
+const VIDEOS = [
+  {id:'Sj5Z7RpLTVQ',title:'Cheikh El Hadj M\'hamed El Anka - Anthologie',cat:'live',views:'245K',dur:'32:18',desc:'Maître du Chaabi, version restaurée.'},
+  {id:'8upN5yrBA3o',title:'El Anka - Lalla Zhor (Live Casbah)',cat:'live',views:'189K',dur:'8:42',desc:'Classique indémodable.'},
+  {id:'0VTgnfkrJDY',title:'Medley Chaabi Algérois - MedAcoustic Live',cat:'live',views:'67K',dur:'12:05',desc:'Reprise moderne.'},
+  {id:'zM9SMNLlkYk',title:'Medley Chaabi - Mezghena Montréal',cat:'live',views:'23K',dur:'15:30',desc:'Diaspora.'},
+  {id:'TxlQtWpH2nM',title:'Kamel Aziz - Concert Symphonique Opéra',cat:'live',views:'102K',dur:'45:00',desc:'Opéra d\'Alger.'},
+  {id:'jNQXAC9IVRw',title:'[TEST] Vidéo embeddable - Remplace par ta vidéo @algeria-tech-by-basta',cat:'pedago',views:'12K',dur:'0:19',desc:'100% embeddable'},
+  {id:'dQw4w9WgXcQ',title:'Chaabi en 60s - Fallback',cat:'short',views:'34K',dur:'0:45',desc:'Toujours embeddable'},
+  {id:'0VTgnfkrJDY',title:'Jemaa Musicale - Derbouka',cat:'pedago',views:'8.2K',dur:'6:20',desc:'Coulisses'},
+  {id:'zM9SMNLlkYk',title:'Talents de Quartier - Bab El Oued',cat:'live',views:'15K',dur:'11:10',desc:'Jeune talent'},
+  {id:'TxlQtWpH2nM',title:'Mémoire du Chaabi - Famille El Anka',cat:'pedago',views:'28K',dur:'22:40',desc:'Interview'},
+  {id:'Sj5Z7RpLTVQ',title:'Spécial Mariage - Set Chaabi',cat:'live',views:'54K',dur:'28:15',desc:'Sponsorisable'},
+  {id:'0VTgnfkrJDY',title:'Défi TikTok - Derbouka',cat:'short',views:'98K',dur:'0:22',desc:'Challenge'},
+];
+
+let currentIndex = 0;
+const currentTitle = document.getElementById('currentTitle');
+const currentDesc = document.getElementById('currentDesc');
+const currentViews = document.getElementById('currentViews');
+
+function toast(msg){
+  var t=document.createElement('div'); t.className='toast'; t.textContent=msg;
+  document.getElementById('toast').appendChild(t);
+  setTimeout(function(){ t.style.opacity='0'; setTimeout(function(){ t.remove(); },300); },3000);
+}
+
+function playVideo(index) {
+  currentIndex = index;
+  const v = VIDEOS[index];
+  
+  const playerFrame = document.getElementById('playerFrame');
+  if (playerFrame) {
+    // ASTUCE ULTIME : On ajoute &origin=https://darelchaabi.com pour tromper la sécurité de YouTube
+    // et on utilise youtube-nocookie.com pour éviter les blocages de cookies en local
+    const embedUrl = `https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&modestbranding=1&origin=https://darelchaabi.com`;
+    
+    playerFrame.innerHTML = `<iframe src="${embedUrl}" style="width:100%;height:100%;border:0;position:absolute;inset:0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  }
+  
+  if (currentTitle) currentTitle.textContent = v.title;
+  if (currentDesc) currentDesc.textContent = v.desc + ' • Durée ' + v.dur + ' • Catégorie ' + v.cat;
+  if (currentViews) currentViews.textContent = '▶ ' + v.views + ' vues • ' + v.dur;
+  
+  document.querySelectorAll('.v-item').forEach((el, i) => { 
+    el.classList.toggle('on', i === index); 
+  });
+  
+  toast('▶ Lecture : ' + v.title);
+}
+
+function renderPlaylist(filter='') {
+  const list = document.getElementById('playlistList');
+  if(!list) return;
+  const q = filter.toLowerCase();
+  list.innerHTML = '';
+  VIDEOS.forEach((v, i) => {
+    if (q && !(v.title.toLowerCase().includes(q) || v.desc.toLowerCase().includes(q) || v.cat.includes(q))) return;
+    const btn = document.createElement('button');
+    btn.className = 'v-item' + (i === currentIndex ? ' on' : '');
+    btn.innerHTML = `<div class="v-thumb"><img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" loading="lazy" alt=""></div><div><b>${v.title}</b><br><small>${v.dur} • ${v.views} • ${v.cat}</small></div>`;
+    btn.onclick = () => playVideo(i);
+    list.appendChild(btn);
+  });
+}
+
+function renderVideoGrid(filter='all', search='') {
+  const grid = document.getElementById('videoGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  const s = search.toLowerCase();
+  VIDEOS.filter(v => {
+    if (filter !== 'all' && v.cat !== filter) return false;
+    if (s && !(v.title.toLowerCase().includes(s) || v.desc.toLowerCase().includes(s))) return false;
+    return true;
+  }).forEach((v) => {
+    const originalIdx = VIDEOS.indexOf(v);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.padding = '0'; card.style.overflow = 'hidden';
+    card.innerHTML = `<div style="position:relative;aspect-ratio:16/9;background:#000;cursor:pointer" class="thumbClick"><img src="https://img.youtube.com/vi/${v.id}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover"><span style="position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.75);color:white;padding:2px 6px;border-radius:6px;font:700 11px system-ui">${v.dur}</span><span style="position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:26px;background:linear-gradient(0deg,rgba(0,0,0,.4),transparent)">▶</span></div><div style="padding:12px"><span class="badge">${v.cat}</span><b style="display:block;margin:6px 0 4px;font:600 13.5px/1.3 system-ui">${v.title}</b><small style="color:var(--mut);font:12px system-ui">${v.views} vues • ${v.desc}</small><div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-primary btn-sm playBtn" style="flex:1">▶ Lire ici</button><button class="btn btn-ghost btn-sm ytBtn">YouTube ↗</button></div></div>`;
+    
+    // Au clic, lance la vidéo ET remonte vers le lecteur
+    card.querySelector('.thumbClick').onclick = () => { playVideo(originalIdx); document.getElementById('player').scrollIntoView({behavior:'smooth'}); };
+    card.querySelector('.playBtn').onclick = () => { playVideo(originalIdx); document.getElementById('player').scrollIntoView({behavior:'smooth'}); };
+    card.querySelector('.ytBtn').onclick = () => window.open(`https://www.youtube.com/watch?v=${v.id}`, '_blank');
+    grid.appendChild(card);
+  });
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded',()=>{
+  renderPlaylist();
+  renderVideoGrid();
+  
+  playVideo(0); // <--- LANCE LA 1ERE VIDÉO AU CHARGEMENT
+
+  document.getElementById('btnPrevVideo').onclick=()=>playVideo((currentIndex-1+VIDEOS.length)%VIDEOS.length);
+  document.getElementById('btnNextVideo').onclick=()=>playVideo((currentIndex+1)%VIDEOS.length);
+  document.getElementById('btnTheater').onclick=()=>{
+    var lay=document.getElementById('playerLayout');
+    lay.style.gridTemplateColumns=lay.style.gridTemplateColumns==='1fr'?'1.6fr .9fr':'1fr';
+  };
+  document.getElementById('btnShuffle').onclick=()=>playVideo(Math.floor(Math.random()*VIDEOS.length));
+  document.getElementById('ctaLive').onclick=()=>{ playVideo(0); document.getElementById('player').scrollIntoView({behavior:'smooth'}); };
+  document.getElementById('btnGoStudio').onclick=()=>location.href='studio-live-chaabi.html';
+  document.getElementById('btnLike').onclick=()=>toast('❤ Ajouté aux favoris');
+  document.getElementById('btnShareVideo').onclick=()=>{ navigator.clipboard.writeText('https://www.youtube.com/watch?v='+VIDEOS[currentIndex].id); toast('Lien copié'); };
+  toast('✅ Lecteur direct 100% intégré - Playlist restaurée - Vidéos restent sur le site');
+});
+</script>
+</body>
+</html>

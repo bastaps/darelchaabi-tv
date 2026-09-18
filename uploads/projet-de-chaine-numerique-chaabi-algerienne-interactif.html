@@ -1,0 +1,209 @@
+<!doctype html><html lang="fr" data-theme="light"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Projet_de_chaîne_numérique_chaabi_algérienne</title>
+<style>
+:root{--bg:#f5f3ed;--paper:#fff;--ink:#22262e;--mut:#6b7280;--acc:#8a6d2e;--line:#e2ddd0;--side:#efece4}
+html[data-theme="dark"]{--bg:#0e1219;--paper:#161c25;--ink:#e9eef6;--mut:#95a1b3;--acc:#d4b263;--line:#2a3342;--side:#121822}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Georgia,"Times New Roman",serif;
+  display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100vh}
+aside{background:var(--side);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;
+  overflow:auto;padding:16px 12px 40px}
+.e-brand{font:700 1rem/1.3 Georgia,serif;padding:4px 8px 12px;display:flex;gap:9px;align-items:center}
+.e-mark{width:32px;height:32px;flex:0 0 32px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(140deg,#e0c47e,#8a6a2c);color:#17130c;font:800 .82rem system-ui}
+.e-brand small{display:block;font:400 .66rem/1.4 system-ui,sans-serif;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+#q{width:100%;border:1px solid var(--line);background:var(--paper);color:var(--ink);
+  padding:9px 10px;border-radius:9px;font:14px system-ui,sans-serif;margin:0 0 10px}
+.e-link{display:flex;gap:8px;align-items:baseline;width:100%;border:1px solid transparent;background:none;
+  color:var(--ink);text-align:left;border-radius:8px;padding:8px 9px;cursor:pointer;
+  font:13.5px/1.35 system-ui,sans-serif}
+.e-link small{color:var(--mut);font-size:11px;min-width:34px;flex:0 0 auto}
+.e-link:hover{background:#8080801f}
+.e-link.on{background:linear-gradient(100deg,#c4a55d,#927033);color:#16120a;font-weight:600}
+.e-link.on small{color:#3c2f12}
+main{padding:38px clamp(18px,5vw,56px) 90px;max-width:900px;margin:auto;width:100%}
+h1{font-size:clamp(1.5rem,3.2vw,2.1rem);line-height:1.2;margin:0 0 6px}
+.e-top{color:var(--mut);font:13px system-ui,sans-serif;margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.e-sec{display:none}
+.e-sec.on{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+h2{font:600 1.35rem/1.3 Georgia,serif;margin:0 0 4px}
+.e-meta{color:var(--mut);font:12.5px system-ui,sans-serif;margin:0 0 20px}
+.page-mark{display:flex;align-items:center;gap:14px;margin:34px 0 16px;scroll-margin-top:14px}
+.page-mark::before,.page-mark::after{content:"";flex:1;height:1px;background:var(--line);opacity:.7}
+.page-mark::before{background:linear-gradient(90deg,transparent,var(--line))}
+.page-mark::after{background:linear-gradient(90deg,var(--line),transparent)}
+.page-mark span{flex:0 0 auto;font:800 12px system-ui,sans-serif;letter-spacing:.02em;color:var(--ink);
+  border:1px solid var(--line);border-radius:99px;padding:3px 12px}
+.pp{margin:0;text-indent:1.15em;text-align:justify;hyphens:auto}
+.pp:first-of-type{text-indent:0}
+.pp.dialogue{text-indent:2.5em}
+.pp.quote{font-style:italic}
+.pp.verse{text-indent:0;text-align:left;padding-left:1.6em;margin:.1em 0}
+.pp.gap{margin-top:1.15em}
+mark{background:#ffd97a;color:#231b06;border-radius:2px}
+.e-pager{display:flex;gap:9px;margin:36px 0 0;padding-top:18px;border-top:1px solid var(--line)}
+.e-pager button{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:9px;
+  padding:9px 14px;cursor:pointer;font:13px system-ui,sans-serif}
+.e-pager button:disabled{opacity:.35;cursor:default}
+.e-tools{display:flex;gap:7px;margin:0 0 12px}
+.e-tools button{flex:1;border:1px solid var(--line);background:var(--paper);color:var(--ink);
+  border-radius:8px;padding:7px;cursor:pointer;font:12.5px system-ui,sans-serif}
+.e-tools button:hover{border-color:var(--acc)}
+@media(max-width:860px){body{grid-template-columns:1fr}aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)}nav{max-height:230px;overflow:auto}}
+@media print{aside,.e-pager,.e-tools{display:none!important}.e-sec{display:block!important}body{display:block}main{max-width:none;padding:0}@page{margin:16mm}}
+</style></head><body>
+<aside>
+  <div class="e-brand"><span class="e-mark">AT</span><span>Algeria Tech by Basta<small>Centre de conversion texte interactif</small></span></div>
+  <div class="e-tools">
+    <button id="themeB" type="button">☾ Thème</button>
+    <button id="printB" type="button">🖨 Imprimer</button>
+  </div>
+  <input id="q" type="search" placeholder="Rechercher dans le texte…" autocomplete="off">
+  <nav id="nv"><button class="e-link" data-i="0"><small>§1</small><span>1. Positionnement proposé</span></button><button class="e-link" data-i="1"><small>§2</small><span>2. Formats d’émissions</span></button><button class="e-link" data-i="2"><small>§3</small><span>3. Répartition des plateformes</span></button><button class="e-link" data-i="3"><small>§4</small><span>A. Sponsoring local et diaspora</span></button><button class="e-link" data-i="4"><small>§5</small><span>B. Spectacles et prestations</span></button><button class="e-link" data-i="5"><small>§6</small><span>C. Billetterie et concerts diffusés en direct</span></button><button class="e-link" data-i="6"><small>§7</small><span>D. Abonnements et soutien des fans</span></button><button class="e-link" data-i="7"><small>§8</small><span>E. Publicité des plateformes</span></button><button class="e-link" data-i="8"><small>§9</small><span>F. Produits et services</span></button><button class="e-link" data-i="9"><small>§10</small><span>5. Modèle de rémunération des musiciens</span></button><button class="e-link" data-i="10"><small>§11</small><span>6. Budget de démarrage indicatif</span></button><button class="e-link" data-i="11"><small>§12</small><span>7. Exemple de modèle mensuel à atteindre</span></button><button class="e-link" data-i="12"><small>§13</small><span>Jours 1 à 15 : fondations</span></button><button class="e-link" data-i="13"><small>§14</small><span>Jours 16 à 45 : preuve de concept</span></button><button class="e-link" data-i="14"><small>§15</small><span>Jours 46 à 75 : communauté et ventes</span></button><button class="e-link" data-i="15"><small>§16</small><span>Jours 76 à 90 : première saison</span></button><button class="e-link" data-i="16"><small>§17</small><span>9. Indicateurs à suivre</span></button><button class="e-link" data-i="17"><small>§18</small><span>10. Recommandation finale</span></button><button class="e-link" data-i="18"><small>§19</small><span>Pitch court pour les partenaires</span></button><button class="e-link" data-i="19"><small>§20</small><span>Sources utiles</span></button></nav>
+</aside>
+<main>
+  <h1>Projet_de_chaîne_numérique_chaabi_algérienne</h1>
+  <div class="e-top">20 sections détectées · 20 section(s)</div>
+  <article class="e-sec" id="s0" data-i="0">
+       <h2>1. Positionnement proposé</h2>
+       <div class="e-meta"></div>
+       <p>Le projet ne doit pas être présenté comme une simple chaîne YouTube, mais comme un <strong>média culturel chaabi</strong> distribué sur plusieurs plateformes : YouTube comme bibliothèque principale et lieu des émissions longues, Facebook pour toucher le public familial et local, Instagram et TikTok pour la découverte, et WhatsApp pour la communauté, les réservations et les sponsors.</p><p>Promesse éditoriale : <strong>faire vivre le chaabi algérien, ses artistes, ses histoires et ses cérémonies, avec une qualité régulière et une rémunération transparente des musiciens</strong>.</p><p>Noms possibles : <em>Chaabi Maghreb TV</em>, <em>Dar El Chaabi</em>, <em>Nûba Chaabi</em>, <em>Chaabi Live Algérie</em>, <em>Mizane Chaabi</em>.</p>
+     </article><article class="e-sec" id="s1" data-i="1">
+       <h2>2. Formats d’émissions</h2>
+       <div class="e-meta"></div>
+       <table><thead><tr><th><p>Format</p></th><th><p>Durée</p></th><th><p>Rythme</p></th><th><p>Rôle dans le projet</p></th></tr></thead><tbody><tr><td><p><strong>Chaabi Live</strong></p></td><td><p>20–45 min</p></td><td><p>2 fois/mois</p></td><td><p>Concert filmé avec l’orchestre et invité</p></td></tr><tr><td><p><strong>Le maqam expliqué</strong></p></td><td><p>5–10 min</p></td><td><p>1 fois/semaine</p></td><td><p>Explication d’un rythme, d’un instrument ou d’un texte</p></td></tr><tr><td><p><strong>Mémoire du chaabi</strong></p></td><td><p>15–25 min</p></td><td><p>2 fois/mois</p></td><td><p>Entretien avec anciens, artistes et familles</p></td></tr><tr><td><p><strong>Jemaa musicale</strong></p></td><td><p>10–20 min</p></td><td><p>1 fois/semaine</p></td><td><p>Répétition, coulisses, arrangement d’un morceau</p></td></tr><tr><td><p><strong>Chaabi en 60 secondes</strong></p></td><td><p>30–60 s</p></td><td><p>3–5 fois/semaine</p></td><td><p>Extraits verticaux pour Reels, Shorts et TikTok</p></td></tr><tr><td><p><strong>Talents de quartier</strong></p></td><td><p>10–15 min</p></td><td><p>2 fois/mois</p></td><td><p>Découverte de jeunes chanteurs et musiciens</p></td></tr><tr><td><p><strong>Spécial mariage / fête</strong></p></td><td><p>30–60 min</p></td><td><p>saisonnier</p></td><td><p>Contenu sponsorisable par salles, traiteurs et prestataires</p></td></tr></tbody></table><p>Il faut créer une identité visuelle simple : même générique court, logo, couleurs reconnaissables, sous-titres en arabe et en français, miniature homogène et générique de fin avec les noms de tous les musiciens.</p>
+     </article><article class="e-sec" id="s2" data-i="2">
+       <h2>3. Répartition des plateformes</h2>
+       <div class="e-meta"></div>
+       <ul><li><strong>YouTube :</strong> épisodes complets, concerts, interviews, playlists par artiste et par style. Une vidéo longue doit produire plusieurs extraits courts.</li><li><strong>Facebook :</strong> directs, extraits, annonces de spectacles, publications communautaires et partage dans les groupes chaabi et de la diaspora.</li><li><strong>Instagram :</strong> Reels de 30 à 90 secondes, portraits, répétitions, stories et sondages.</li><li><strong>TikTok :</strong> moments forts, refrains participatifs, défis de percussion, réponses aux commentaires et découverte de jeunes talents.</li><li><strong>WhatsApp Business :</strong> liste de diffusion, calendrier des concerts, réservation, commandes de prestations et relation avec les sponsors.</li><li><strong>Podcast audio :</strong> entretiens et histoires musicales diffusés sur Spotify, Apple Podcasts et autres plateformes, lorsque cela est pertinent.</li></ul><p>Principe de production : <strong>un tournage = un épisode long + 5 à 10 clips + photos + citation + audio court</strong>. Cela réduit le coût par contenu.</p>
+     </article><article class="e-sec" id="s3" data-i="3">
+       <h2>A. Sponsoring local et diaspora</h2>
+       <div class="e-meta"></div>
+       <p>C’est généralement le revenu le plus intéressant au démarrage. Cibler les entreprises qui ont déjà intérêt à parler au public algérien : restaurants, salles des fêtes, traiteurs, magasins de vêtements traditionnels, bijouteries, agences de voyage, opérateurs télécoms, banques, marques alimentaires, plateformes de billetterie, hôtels et commerces de la diaspora.</p><p>Proposer trois offres simples :</p><table><thead><tr><th><p>Offre</p></th><th><p>Contreparties possibles</p></th></tr></thead><tbody><tr><td><p><strong>Partenaire d’un épisode</strong></p></td><td><p>logo au générique, mention présentateur, lien, story et publication dédiée</p></td></tr><tr><td><p><strong>Partenaire d’une saison</strong></p></td><td><p>présence sur 6 à 10 épisodes, placement discret, interviews et visibilité sur les directs</p></td></tr><tr><td><p><strong>Partenaire d’un concert</strong></p></td><td><p>naming de l’événement, affiches, billets invités, stand et contenus avant/après</p></td></tr></tbody></table><p>Ne pas vendre seulement des vues : vendre une <strong>audience culturelle ciblée</strong>, des contenus réutilisables et une présence dans les événements.</p>
+     </article><article class="e-sec" id="s4" data-i="4">
+       <h2>B. Spectacles et prestations</h2>
+       <div class="e-meta"></div>
+       <p>L’orchestre peut financer la chaîne grâce aux prestations privées et publiques : mariages, soirées d’entreprise, festivals, centres culturels et événements de la diaspora. Une part fixe de chaque cachet peut être affectée au média : par exemple 10 à 20 % pour la captation, la communication et la réserve de production, à condition que cela soit intégré au devis du client et accepté par l’orchestre.</p>
+     </article><article class="e-sec" id="s5" data-i="5">
+       <h2>C. Billetterie et concerts diffusés en direct</h2>
+       <div class="e-meta"></div>
+       <p>Organiser un concert mensuel ou trimestriel avec billetterie, captation multicaméra et éventuellement accès premium en ligne. Le direct gratuit sert à attirer le public ; les avantages payants peuvent être une place, une rencontre avec l’orchestre, une répétition privée ou une version intégrale sans interruptions.</p>
+     </article><article class="e-sec" id="s6" data-i="6">
+       <h2>D. Abonnements et soutien des fans</h2>
+       <div class="e-meta"></div>
+       <p>Créer un cercle de soutien, par exemple <strong>Les Amis du Chaabi</strong>, avec plusieurs niveaux mensuels. Les avantages doivent rester peu coûteux à produire : badge, accès anticipé, playlist privée, coulisses, vote pour un invité, répétition en direct ou invitation annuelle.</p><p>YouTube propose des fonctionnalités de financement par les fans comme les adhésions, Super Chat et Super Thanks lorsque la chaîne est éligible. Les conditions et la disponibilité doivent être vérifiées dans YouTube Studio au moment du lancement. Facebook propose également des outils de monétisation, mais leur disponibilité peut dépendre de l’éligibilité, du pays et parfois d’une invitation.</p>
+     </article><article class="e-sec" id="s7" data-i="7">
+       <h2>E. Publicité des plateformes</h2>
+       <div class="e-meta"></div>
+       <p>La publicité YouTube, Facebook ou Instagram doit être considérée comme un <strong>bonus progressif</strong>, pas comme le salaire initial des musiciens. Elle dépend fortement du pays de l’audience, du volume de visionnage, de la durée des vidéos et de l’éligibilité.</p>
+     </article><article class="e-sec" id="s8" data-i="8">
+       <h2>F. Produits et services</h2>
+       <div class="e-meta"></div>
+       <ul><li>prestations de l’orchestre et animation musicale ;</li><li>ateliers de chant, derbouka, mandole ou écriture de texte ;</li><li>masterclass en ligne ;</li><li>albums numériques et enregistrements live ;</li><li>vente de compilations autorisées, partitions ou méthodes ;</li><li>merchandising : t-shirts, casquettes, affiches et objets liés au chaabi ;</li><li>production audiovisuelle pour d’autres artistes ;</li><li>location du studio ou de l’équipe de captation ;</li><li>abonnement B2B pour restaurants, salles et associations qui souhaitent diffuser des séquences autorisées.</li></ul>
+     </article><article class="e-sec" id="s9" data-i="9">
+       <h2>5. Modèle de rémunération des musiciens</h2>
+       <div class="e-meta"></div>
+       <p>Avant la première publication, établir un accord écrit avec chaque musicien. Il doit préciser :</p><ol><li>le cachet de répétition, d’enregistrement et de spectacle ;</li><li>le paiement des déplacements, repas et éventuels hébergements ;</li><li>la part revenant à l’orchestre sur les sponsors, concerts, licences et plateformes ;</li><li>la propriété ou l’autorisation d’exploitation des enregistrements et images ;</li><li>les crédits obligatoires au générique et dans la description ;</li><li>les règles en cas de réutilisation d’un morceau, d’un extrait ou d’une émission ;</li><li>la fréquence de reddition des comptes.</li></ol><p>Un système simple et motivant peut être : <strong>cachet minimum garanti + caisse commune de production + bonus trimestriel lié aux revenus réellement encaissés</strong>. Par exemple, après paiement des coûts directement liés à un projet, une part définie à l’avance peut être répartie entre artistes, réalisateur et réserve de la chaîne. Les pourcentages doivent être négociés avec les intéressés et contrôlés par un comptable ou un conseiller juridique local.</p><p>Pour chaque morceau, il faut identifier les auteurs, compositeurs, arrangeurs, interprètes et producteurs, et vérifier les autorisations nécessaires. Pour les œuvres non originales ou les reprises, obtenir les droits appropriés et se renseigner auprès des organismes compétents, notamment l’ONDA et les professionnels du droit en Algérie.</p>
+     </article><article class="e-sec" id="s10" data-i="10">
+       <h2>6. Budget de démarrage indicatif</h2>
+       <div class="e-meta"></div>
+       <p>Un lancement léger peut commencer avec deux smartphones récents ou une caméra, deux micros cravate, deux micros d’ambiance, un enregistreur, trois éclairages LED, trépieds, câbles, décor simple et logiciel de montage. Il faut éviter de surinvestir avant d’avoir validé l’audience.</p><table><thead><tr><th><p>Poste</p></th><th><p>Budget indicatif à adapter</p></th></tr></thead><tbody><tr><td><p>Captation et son de départ</p></td><td><p>250 000–600 000 DA</p></td></tr><tr><td><p>Décor, logo, générique et habillage</p></td><td><p>80 000–200 000 DA</p></td></tr><tr><td><p>Montage et community management pendant 3 mois</p></td><td><p>180 000–450 000 DA</p></td></tr><tr><td><p>Communication et publicité de lancement</p></td><td><p>100 000–300 000 DA</p></td></tr><tr><td><p>Déplacements, repas et imprévus</p></td><td><p>100 000–250 000 DA</p></td></tr><tr><td><p><strong>Total prudent</strong></p></td><td><p><strong>710 000–1 800 000 DA</strong></p></td></tr></tbody></table><p>Ces montants sont des ordres de grandeur, non un devis. Le matériel peut être réduit si l’artiste possède déjà une partie de l’équipement ou s’associe avec une école, un studio ou un vidéaste.</p>
+     </article><article class="e-sec" id="s11" data-i="11">
+       <h2>7. Exemple de modèle mensuel à atteindre</h2>
+       <div class="e-meta"></div>
+       <p>Scénario illustratif après quelques mois, et non une promesse de résultat :</p><ul><li>2 sponsors d’émission à 150 000 DA : <strong>300 000 DA</strong> ;</li><li>2 prestations supplémentaires de l’orchestre avec contribution média de 50 000 DA : <strong>100 000 DA</strong> ;</li><li>soutien des fans et abonnements : <strong>80 000 DA</strong> ;</li><li>atelier ou masterclass : <strong>100 000 DA</strong> ;</li><li>produits, licences ou revenus de plateforme : <strong>50 000 DA</strong>.</li></ul><p>Total indicatif : <strong>630 000 DA</strong>. Une allocation possible serait : 40–50 % aux cachets et bonus des musiciens, 20–30 % à la production et au montage, 10–15 % à la communication, et le solde à la réserve et à la direction. Les pourcentages doivent être fixés contractuellement et les montants réels dépendront des ventes et des coûts.</p>
+     </article><article class="e-sec" id="s12" data-i="12">
+       <h2>Jours 1 à 15 : fondations</h2>
+       <div class="e-meta"></div>
+       <p>Choisir le nom, le logo et la promesse éditoriale ; ouvrir les comptes professionnels ; recenser les musiciens ; signer les accords ; établir le budget ; préparer une présentation sponsor de deux pages et un calendrier de publication.</p>
+     </article><article class="e-sec" id="s13" data-i="13">
+       <h2>Jours 16 à 45 : preuve de concept</h2>
+       <div class="e-meta"></div>
+       <p>Tourner trois épisodes pilotes : un live, une interview patrimoniale et une émission pédagogique. Découper chaque tournage en contenus courts. Tester les titres, miniatures, sous-titres et horaires de publication. Mesurer la rétention, les commentaires, les partages et les demandes de prestations, pas seulement les abonnés.</p>
+     </article><article class="e-sec" id="s14" data-i="14">
+       <h2>Jours 46 à 75 : communauté et ventes</h2>
+       <div class="e-meta"></div>
+       <p>Lancer un WhatsApp Business, une liste de diffusion et un premier direct. Contacter au moins 30 sponsors potentiels avec une offre claire. Publier un dossier de presse avec les statistiques réelles. Mettre en place un formulaire de réservation pour les prestations de l’orchestre.</p>
+     </article><article class="e-sec" id="s15" data-i="15">
+       <h2>Jours 76 à 90 : première saison</h2>
+       <div class="e-meta"></div>
+       <p>Signer un sponsor test, organiser un concert ou une captation sponsorisée, lancer les abonnements de soutien si les outils sont disponibles, publier un bilan financier simplifié et décider quels formats conserver.</p>
+     </article><article class="e-sec" id="s16" data-i="16">
+       <h2>9. Indicateurs à suivre</h2>
+       <div class="e-meta"></div>
+       <p>Chaque mois, suivre le nombre de spectateurs récurrents, la durée moyenne de visionnage, le taux de rétention, les partages, les demandes de prestations, les contacts sponsors, le revenu par contenu, le coût par épisode, les paiements aux musiciens et la trésorerie disponible. Un contenu avec moins de vues mais qui génère une prestation à 300 000 DA peut être plus utile qu’un clip viral sans revenu.</p>
+     </article><article class="e-sec" id="s17" data-i="17">
+       <h2>10. Recommandation finale</h2>
+       <div class="e-meta"></div>
+       <p>Le meilleur modèle n’est pas « attendre que YouTube paie ». Il faut construire un <strong>écosystème</strong> : l’orchestre produit des concerts et des prestations, la chaîne transforme ces activités en contenus, les réseaux sociaux attirent le public, les sponsors financent les épisodes et la communauté soutient les artistes. La priorité est de garantir un cachet minimum aux musiciens dès le premier projet, puis de leur distribuer une part transparente des revenus additionnels.</p>
+     </article><article class="e-sec" id="s18" data-i="18">
+       <h2>Pitch court pour les partenaires</h2>
+       <div class="e-meta"></div>
+       <p>« Nous produisons le média numérique du chaabi algérien : concerts, mémoire, jeunes talents et contenus courts pour l’Algérie et la diaspora. Votre marque associe son image à un patrimoine vivant, bénéficie de contenus réutilisables et touche une communauté engagée. »</p><p>Les règles de monétisation, la disponibilité des fonctionnalités et les seuils des plateformes évoluent. Il faut toujours vérifier les conditions directement dans YouTube Studio, Meta Business Suite et les pages officielles avant d’établir une prévision financière définitive.</p>
+     </article><article class="e-sec" id="s19" data-i="19">
+       <h2>Sources utiles</h2>
+       <div class="e-meta"></div>
+       <ul><li><a href="https://support.google.com/youtube/answer/72851">Programme Partenaire YouTube et éligibilité</a></li><li><a href="https://support.google.com/youtube/answer/1311392">Politiques de monétisation YouTube</a></li><li><a href="https://support.google.com/youtube/answer/94522">Fonctionnalités de soutien des fans sur YouTube</a></li><li><a href="https://creators.facebook.com/tools/facebook-content-monetization/">Monétisation Facebook pour les créateurs</a></li><li><a href="https://www.facebook.com/business/help/169845596919485">Politiques de monétisation des partenaires Meta</a></li></ul><p><em>Document de cadrage : les chiffres sont indicatifs et doivent être adaptés aux coûts, contrats, droits et conditions fiscales applicables en Algérie.</em></p>
+     </article>
+  <div class="e-pager"><button id="pv" type="button">← Précédent</button><button id="nx" type="button">Suivant →</button></div>
+</main>
+<script>
+(function(){
+  var secs=[].slice.call(document.querySelectorAll(".e-sec")),
+      links=[].slice.call(document.querySelectorAll(".e-link")),
+      cur=0, q=document.getElementById("q"), key=document.title;
+  function esc(t){ return t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  function show(i){
+    cur=Math.max(0,Math.min(secs.length-1,i));
+    secs.forEach(function(s,k){ s.classList.toggle("on",k===cur); });
+    links.forEach(function(l,k){ l.classList.toggle("on",k===cur); });
+    document.getElementById("pv").disabled = cur===0;
+    document.getElementById("nx").disabled = cur===secs.length-1;
+    try{ localStorage.setItem("lu-"+key,cur); }catch(e){}
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  links.forEach(function(l){ l.onclick=function(){ show(+l.dataset.i); }; });
+  document.getElementById("pv").onclick=function(){ show(cur-1); };
+  document.getElementById("nx").onclick=function(){ show(cur+1); };
+  document.addEventListener("keydown",function(e){
+    if(e.target.tagName==="INPUT") return;
+    if(e.key==="ArrowLeft") show(cur-1);
+    if(e.key==="ArrowRight") show(cur+1);
+  });
+  document.getElementById("themeB").onclick=function(){
+    var dark=document.documentElement.dataset.theme==="dark";
+    document.documentElement.dataset.theme=dark?"light":"dark";
+    try{ localStorage.setItem("th-"+key,dark?"light":"dark"); }catch(e){}
+  };
+  document.getElementById("printB").onclick=function(){ window.print(); };
+  secs.forEach(function(s){ s.__o=s.innerHTML; });
+  var timer=null;
+  q.oninput=function(){
+    clearTimeout(timer);
+    timer=setTimeout(function(){
+      var v=q.value.trim();
+      var low=v.toLowerCase();
+      var re=v?new RegExp("("+esc(v)+")","gi"):null;
+      var first=-1;
+      secs.forEach(function(s,k){
+        var hit=!v || s.textContent.toLowerCase().indexOf(low)>-1;
+        links[k].style.display=hit?"":"none";
+        if(hit && first<0) first=k;
+        if(!re){ s.innerHTML=s.__o; return; }
+        s.innerHTML = hit
+          ? s.__o.replace(/>([^<]+)</g,function(m,t){ return ">"+t.replace(re,"<mark>$1</mark>")+"<"; })
+          : s.__o;
+      });
+      if(v && first>-1 && first!==cur) show(first);
+      var n=document.getElementById("cnt");
+      if(n) n.textContent = v ? (document.querySelectorAll("mark").length+" occurrence(s)") : "";
+    },160);
+  };
+  try{
+    var t=localStorage.getItem("th-"+key); if(t) document.documentElement.dataset.theme=t;
+    var p=+localStorage.getItem("lu-"+key); show(p>0?p:0);
+  }catch(e){ show(0); }
+})();
+</script>
+</body></html>
